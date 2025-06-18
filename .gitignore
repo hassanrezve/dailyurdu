@@ -1,26 +1,48 @@
-*.log
-.DS_Store
+# Environment Files
 .env
 .env.backup
 .env.production
-.phpactor.json
+auth.json
+
+# Log and Debug Files
+*.log
+npm-debug.log
+yarn-error.log
+Thumbs.db
+.DS_Store
 .phpunit.result.cache
-/.fleet
+.phpunit.cache
+
+# IDE & Editor Settings
 /.idea
-/.nova
-/.phpunit.cache
 /.vscode
+/.fleet
+/.nova
 /.zed
-/auth.json
+
+# Node & Vendor
 /node_modules
+/vendor
+
+# Laravel & Build Artifacts
 /public/build
 /public/hot
 /public/storage
+/public/admin
+/public/dist
+/build
+/dist
 /storage/*.key
 /storage/pail
-/vendor
+
+# Laravel & Dev Tools
+.phpactor.json
 Homestead.json
 Homestead.yaml
-npm-debug.log
-Thumbs.db
-yarn-error.log
+*.zip
+*.tar.gz
+*.bak
+*.tmp
+*.lock
+*.lock.json
+*.lock.json.

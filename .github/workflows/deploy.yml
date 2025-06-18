@@ -44,4 +44,4 @@ jobs:
               rm -rf /home/customer/www/enigma.flightitineraryforvisa.com/fifv/public/build/assets
 
               # Remove manifest.json from public_html/build/
-              rm -f /home/customer/www/enigma.flightitineraryforvisa.com/public_html/build/manifest.json
+              rm -f /home/customer/www/enigma.flightitineraryforvisa.com/public_html/build/manifest.json`
