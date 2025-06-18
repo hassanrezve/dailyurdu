@@ -1,0 +1,47 @@
+name: Deploy to Shared Hosting via SSH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_FIFV_USERNAME }}
+          key: ${{ secrets.SSH_FIFV_PRIVATE }}
+          port: 18765
+          source: "./"
+          target: "/home/customer/www/enigma.flightitineraryforvisa.com/fifv"
+
+      - name: Copy specific public folders to public_html and clean up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_FIFV_USERNAME }}
+          key: ${{ secrets.SSH_FIFV_PRIVATE }}
+          port: 18765
+          script: |
+              # Copy specific folders to public_html
+              cp -r /home/customer/www/enigma.flightitineraryforvisa.com/fifv/public/assets /home/customer/www/enigma.flightitineraryforvisa.com/public_html/
+              cp -r /home/customer/www/enigma.flightitineraryforvisa.com/fifv/public/admin /home/customer/www/enigma.flightitineraryforvisa.com/public_html/
+              cp -r /home/customer/www/enigma.flightitineraryforvisa.com/fifv/public/fonts /home/customer/www/enigma.flightitineraryforvisa.com/public_html/
+              cp -r /home/customer/www/enigma.flightitineraryforvisa.com/fifv/public/build /home/customer/www/enigma.flightitineraryforvisa.com/public_html/
+
+              # Remove all files and folders in fifv/public/ except the build folder
+              find /home/customer/www/enigma.flightitineraryforvisa.com/fifv/public/ -maxdepth 1 -not -path /home/customer/www/enigma.flightitineraryforvisa.com/fifv/public/ -not -name build -exec rm -rf {} \;
+
+              # Remove build/assets from public_html/build/
+              rm -rf /home/customer/www/enigma.flightitineraryforvisa.com/fifv/public/build/assets
+
+              # Remove manifest.json from public_html/build/
+              rm -f /home/customer/www/enigma.flightitineraryforvisa.com/public_html/build/manifest.json
