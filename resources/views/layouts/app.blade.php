@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="{{asset('wp-content/uploads/2024/12/cropped-dailyurdu.net_logo-192x192.png')}}" sizes="192x192">
-        <title>@yield('title', 'روزانہ اردو')</title>
+        <title>@yield('title', 'Daily Urdu – Daily Urdu News')</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
         <style>
