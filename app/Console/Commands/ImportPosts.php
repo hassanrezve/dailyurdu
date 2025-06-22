@@ -4,10 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Post;
 use App\Models\Category;
-use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class ImportPosts extends Command
 {
@@ -16,123 +15,125 @@ class ImportPosts extends Command
 
     public function handle()
     {
-        $this->info("Starting post import...");
+        $this->info("🚀 Starting post import...");
 
         // Step 1: Fetch and map all categories
-        // $this->info("Fetching categories...");
-        // $categoryResponse = Http::get('https://www.dailyurdu.net/wp-json/wp/v2/categories?per_page=100');
+        $this->info("📦 Fetching categories...");
+        $categoryResponse = Http::get('https://www.dailyurdu.net/wp-json/wp/v2/categories?per_page=100');
 
-        // if ($categoryResponse->failed()) {
-        //     $this->error("Failed to fetch categories");
-        //     return 1;
-        // }
+        if ($categoryResponse->failed()) {
+            $this->error("❌ Failed to fetch categories");
+            return 1;
+        }
 
-        // $categoriesMap = [];
-        // foreach ($categoryResponse->json() as $cat) {
-        //     $category = Category::firstOrCreate([
-        //         'slug' => $cat['slug']
-        //     ], [
-        //         'name' => $cat['name']
-        //     ]);
-        //     $categoriesMap[$cat['id']] = $category->id;
-        // }
+        $categoriesMap = [];
+        foreach ($categoryResponse->json() as $cat) {
+            $category = Category::firstOrCreate([
+                'slug' => urldecode($cat['slug']),
+            ], [
+                'name' => html_entity_decode($cat['name'], ENT_QUOTES, 'UTF-8'),
+            ]);
+            $categoriesMap[$cat['id']] = $category->id;
+        }
 
-        // Step 2: Fetch posts page by page
-        $page = 1;
+        // Step 2: Get total number of posts and pages
+        $this->info("📊 Calculating total posts...");
+        $countResponse = Http::get('https://www.dailyurdu.net/wp-json/wp/v2/posts?per_page=1');
+
+        if ($countResponse->failed()) {
+            $this->error("❌ Failed to retrieve post count");
+            return 1;
+        }
+
+        $totalPosts = (int) $countResponse->header('X-WP-Total');
         $perPage = 100;
-        $done = false;
+        $totalPages = (int) ceil($totalPosts / $perPage);
+
+        $this->info("🧮 Total posts: $totalPosts | Pages: $totalPages");
+
+        // Step 3: Loop through pages from oldest to newest
         $totalImported = 0;
 
-        while (!$done) {
-            $this->info("Fetching posts page $page...");
+        for ($page = 182; $page <= $totalPages; $page++) {
+            $this->info("📥 Fetching page $page of $totalPages...");
 
             try {
                 $postResponse = Http::retry(3, 5000)
-                                ->timeout(60)
-                                ->get("https://www.dailyurdu.net/wp-json/wp/v2/posts?per_page=50&page={$page}");
-            } catch (\Illuminate\Http\Client\ConnectionException $e) {
-                $this->error("Failed to fetch page {$page}: " . $e->getMessage());
-              
-            }
-            
-            if ($postResponse->status() === 400 || empty($postResponse->json())) {
-                $done = true;
-                $this->info("No more posts to fetch.");
-                break;
+                    ->timeout(60)
+                    ->get("https://www.dailyurdu.net/wp-json/wp/v2/posts?per_page={$perPage}&page={$page}&orderby=date&order=asc");
+            } catch (\Exception $e) {
+                $this->error("❌ Error fetching page $page: " . $e->getMessage());
+                continue;
             }
 
-            if ($postResponse->failed()) {
-                $this->error("Error fetching page $page");
-                break;
+            if ($postResponse->failed() || empty($postResponse->json())) {
+                $this->warn("⚠️ Skipping empty or failed response for page $page");
+                continue;
             }
-            
+
             foreach ($postResponse->json() as $postData) {
-                $slug = Str::slug($postData['title']['rendered']);
-                if (Post::where('slug', $slug)->exists()) 
-                {
-                    $this->info("skipping post fount. $slug");
-                    continue;}
-                $imageUrl = $postData['jetpack_featured_media_url'] ?? null;
+                $slug = urldecode($postData['slug']);
 
-                if ($imageUrl) {
-                    $imageExtension = pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION);
-                    $imageName = $slug . '.' . $imageExtension;
-                    $uploadDir = public_path('uploads');
-                
-                    if (!file_exists($uploadDir)) {
-                        mkdir($uploadDir, 0755, true);
-                    }
-                
-                    $localPath = $uploadDir . '/' . $imageName;
-                
-                    try {
-                        $response = Http::withHeaders([
-                            'User-Agent' => 'Mozilla/5.0 (compatible; YourAppName/1.0)'
-                        ])->get($imageUrl);
-                
-                        if ($response->ok()) {
-                            file_put_contents($localPath, $response->body());
-                            $image = 'uploads/' . $imageName;
-                        } else {
-                            $this->error("Failed to download image: {$imageUrl}");
-                            $image = null;
-                        }
-                    } catch (\Exception $e) {
-                        $this->error("Exception downloading image: {$imageUrl} - " . $e->getMessage());
-                        $image = null;
-                    }
-                } else {
-                    $image = null;
+                // Skip if already exists
+                if (Post::where('slug', $slug)->exists()) {
+                    $this->info("🔁 Skipping existing post: $slug");
+                    continue;
                 }
-                
-            
-                
+
+                // Parse and decode
+                $title = html_entity_decode(strip_tags($postData['title']['rendered']), ENT_QUOTES, 'UTF-8');
+                $content = html_entity_decode($postData['content']['rendered'], ENT_QUOTES, 'UTF-8');
+
+                // Parse dates
+                try {
+                    $createdAt = Carbon::parse($postData['date'])->utc();
+                    $updatedAt = Carbon::parse($postData['modified'])->utc();
+                } catch (\Exception $e) {
+                    $this->warn("⚠️ Invalid date for $slug: " . $e->getMessage());
+                    $createdAt = Carbon::now();
+                    $updatedAt = Carbon::now();
+                }
+
+                // Parse image
+                $imageUrl = null;
+                if (!empty($postData['jetpack_featured_media_url'])) {
+                    if (preg_match('/wp-content\/uploads\/(.+)/', $postData['jetpack_featured_media_url'], $matches)) {
+                        $imageUrl = 'wp-content/uploads/' . $matches[1];
+                    }
+                }
+
                 // Create post
                 $post = Post::create([
-                    'title' => $postData['title']['rendered'],
+                    'title' => $title,
                     'slug' => $slug,
-                    'content' => $postData['content']['rendered'],
-                    'image_url' => $image
+                    'content' => $content,
+                    'image_url' => $imageUrl,
                 ]);
-                $this->info("Done. creating post $post->title");
-                // Attach categories
-                $postCategoryIds = collect($postData['categories'])
-                    ->map(fn($id) => $categoriesMap[$id] ?? null)
-                    ->filter()
-                    ->toArray();
 
-                $post->categories()->attach($postCategoryIds);
+                $post->created_at = $createdAt;
+                $post->updated_at = $updatedAt;
+                $post->save();
+
+                // Attach categories
+                if (!empty($postData['categories'])) {
+                    $postCategoryIds = collect($postData['categories'])
+                        ->map(fn($id) => $categoriesMap[$id] ?? null)
+                        ->filter()
+                        ->toArray();
+
+                    if (!empty($postCategoryIds)) {
+                        $post->categories()->attach($postCategoryIds);
+                    }
+                }
 
                 $totalImported++;
+                $this->info("✅ Imported: {$post->title}");
             }
-            
 
-            $page++;
-            sleep(1); // be kind to the API
-            $this->info("Done. Total posts imported: $totalImported");
+            sleep(3); // be nice to the API
         }
 
-        $this->info("Done. Total posts imported: $totalImported");
+        $this->info("🎉 Import completed! Total posts imported: $totalImported");
         return 0;
     }
 }

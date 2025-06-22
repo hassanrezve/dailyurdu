@@ -13,17 +13,15 @@ class Post extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    protected static function booted()
+    public function getImageAttribute()
     {
-        static::creating(function ($post) {
-            $post->slug = Str::slug($post->title);
-
-            // Ensure uniqueness
-            $originalSlug = $post->slug;
-            $counter = 1;
-            while (static::where('slug', $post->slug)->exists()) {
-                $post->slug = $originalSlug . '-' . $counter++;
-            }
-        });
+        return $this->image_url ? asset($this->image_url): asset('/noimage.png');
+    }
+    public function url()
+    {
+        return url("/news/".$this->slug);
+    }
+    public function getDateAttribute(){
+        return $this->created_at->diffForHumans();
     }
 }

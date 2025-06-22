@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\NewsletterController;
@@ -19,11 +18,12 @@ use App\Http\Controllers\NewsletterController;
 */
 
 // Home page
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [PageController::class, 'index'])->name('home');
 
 // News routes
-Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
-Route::get('/category/{category}', [NewsController::class, 'category'])->name('news.category');
+Route::get('/news/{post:slug}', [NewsController::class, 'show'])->name('post.show');
+Route::get('/category/{category:slug}', [NewsController::class, 'category'])->name('news.category');
+
 Route::get('/search', [NewsController::class, 'search'])->name('news.search');
 
 // Static pages

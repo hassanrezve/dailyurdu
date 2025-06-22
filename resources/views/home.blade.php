@@ -13,7 +13,7 @@
                 <div class="bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white p-4 rounded-2xl shadow-lg">
                     <div class="flex items-center">
                         <div class="bg-white text-red-600 px-4 py-2 rounded-full text-sm font-bold ml-4 animate-pulse">
-                            <span class="urdu-text">خبر فوری</span>
+                            <span class="urdu-text">لیڈ خبر</span>
                         </div>
                         <span class="urdu-text font-semibold text-lg">اہم خبر: پاکستان میں نئی ٹیکنالوجی کا اعلان</span>
                     </div>
@@ -65,164 +65,48 @@
             </article>
 
             <!-- Category Sections -->
-            <!-- Politics Section -->
-            <div class="mb-12">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-bold text-slate-800 urdu-text flex items-center">
-                        <div class="w-1 h-8 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full ml-3"></div>
-                        سیاسی خبریں
-                    </h3>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-800 urdu-text text-sm">تمام خبریں دیکھیں</a>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                        <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                            <div class="absolute top-4 right-4">
-                                <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">سیاست</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                                قومی اسمبلی میں اہم بل کی منظوری
+            @foreach($categories as $category)
+                @if($category->posts->isNotEmpty())
+                    <div class="mb-12">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-bold text-slate-800 urdu-text flex items-center">
+                                <div class="w-1 h-8 bg-gradient-to-b from-indigo-600 to-purple-600 rounded-full ml-3"></div>
+                                {{ $category->name }}
                             </h3>
-                            <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                                قومی اسمبلی نے آج ایک اہم بل کی منظوری دے دی جس سے عوام کو بہت فائدہ ہوگا...
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-xs urdu-text">1 گھنٹہ پہلے</span>
-                                <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium urdu-text text-sm">تفصیل</a>
-                            </div>
+                            <a href="{{ route('news.category', $category->slug) }}" class="text-indigo-600 hover:text-indigo-800 urdu-text text-sm">
+                                تمام خبریں دیکھیں
+                            </a>
                         </div>
-                    </article>
-                    <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                    <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                            <div class="absolute top-4 right-4">
-                                <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">سیاست</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                                وزیر خارجہ کا اہم بیان
-                            </h3>
-                            <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                                وزیر خارجہ نے بین الاقوامی تعلقات کے حوالے سے اہم بیان دیا...
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-xs urdu-text">2 گھنٹے پہلے</span>
-                                <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium urdu-text text-sm">تفصیل</a>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @foreach($category->posts as $post)
+                                <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
+                                    <div class="relative">
+                                        <img src="{{ asset($post->image) }}" alt="خبر" class="w-full h-48 object-cover">
+                                        <div class="absolute top-4 right-4">
+                                            <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">{{ $category->name }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
+                                            {{ $post->title }}
+                                        </h3>
+                                        <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
+                                            {{ Str::limit(strip_tags($post->content), 120) }}
+                                        </p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-slate-400 text-xs urdu-text">{{ $post->created_at->diffForHumans() }}</span>
+                                            <a href="{{ route('post.show', $post->slug) }}" class="text-indigo-600 hover:text-indigo-800 font-medium urdu-text text-sm">
+                                                تفصیل
+                                            </a>
+                                        </div>
+                                    </div>
+                                </article>
+                            @endforeach
                         </div>
                     </div>
-                    </article>
-                </div>
-            </div>
+                @endif
+            @endforeach
 
-            <!-- Sports Section -->
-            <div class="mb-12">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-bold text-slate-800 urdu-text flex items-center">
-                        <div class="w-1 h-8 bg-gradient-to-b from-emerald-600 to-green-600 rounded-full ml-3"></div>
-                        کھیل
-                    </h3>
-                    <a href="#" class="text-emerald-600 hover:text-emerald-800 urdu-text text-sm">تمام خبریں دیکھیں</a>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                        <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                            <div class="absolute top-4 right-4">
-                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">کرکٹ</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                                پاکستان کرکٹ ٹیم کی شاندار جیت
-                            </h3>
-                            <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                                قومی کرکٹ ٹیم نے آج بین الاقوامی میچ میں زبردست کارکردگی کا مظاہرہ کیا...
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-xs urdu-text">3 گھنٹے پہلے</span>
-                                <a href="#" class="text-emerald-600 hover:text-emerald-800 font-medium urdu-text text-sm">تفصیل</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                        <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                            <div class="absolute top-4 right-4">
-                                <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">فٹ بال</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                                نیشنل لیگ میں اہم میچ
-                            </h3>
-                            <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                                نیشنل فٹ بال لیگ میں آج ایک اہم میچ کھیلا گیا...
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-xs urdu-text">4 گھنٹے پہلے</span>
-                                <a href="#" class="text-emerald-600 hover:text-emerald-800 font-medium urdu-text text-sm">تفصیل</a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-
-            <!-- Technology Section -->
-            <div class="mb-12">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-bold text-slate-800 urdu-text flex items-center">
-                        <div class="w-1 h-8 bg-gradient-to-b from-violet-600 to-purple-600 rounded-full ml-3"></div>
-                        تکنالوجی
-                    </h3>
-                    <a href="#" class="text-violet-600 hover:text-violet-800 urdu-text text-sm">تمام خبریں دیکھیں</a>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                        <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                            <div class="absolute top-4 right-4">
-                                <span class="bg-violet-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">موبائل</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                                نئی موبائل ایپ کا اجراء
-                            </h3>
-                            <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                                پاکستانی ڈویلپرز نے ایک نئی ایپ بنائی ہے جو عوام کی روزمرہ کی ضروریات پورا کرے گی...
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-xs urdu-text">5 گھنٹے پہلے</span>
-                                <a href="#" class="text-violet-600 hover:text-violet-800 font-medium urdu-text text-sm">تفصیل</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                        <div class="relative">
-                            <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                            <div class="absolute top-4 right-4">
-                                <span class="bg-violet-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">سائنس</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                                سائنس دانوں کی نئی دریافت
-                            </h3>
-                            <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                                پاکستانی سائنس دانوں نے ایک اہم دریافت کی ہے جو مستقبل میں بہت فائدہ مند ثابت ہوگی...
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-xs urdu-text">6 گھنٹے پہلے</span>
-                                <a href="#" class="text-violet-600 hover:text-violet-800 font-medium urdu-text text-sm">تفصیل</a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
         </div>
 
         <!-- Sidebar -->

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Post;
+use App\Models\Category;
 class NewsController extends Controller
 {
     /**
@@ -12,17 +13,10 @@ class NewsController extends Controller
      * @param string $slug
      * @return \Illuminate\View\View
      */
-    public function show($slug)
+    public function show(Post $post)
     {
         // TODO: Fetch news article from database using $slug
-        return view('news', [
-            'news' => [
-                'title' => 'Sample News Title',
-                'content' => 'Sample news content...',
-                'category' => 'Politics',
-                'published_at' => now(),
-            ]
-        ]);
+        return view('news', compact("post"));
     }
 
     /**
@@ -31,13 +25,10 @@ class NewsController extends Controller
      * @param string $category
      * @return \Illuminate\View\View
      */
-    public function category($category)
+    public function category(Category $category)
     {
-        // TODO: Fetch news articles by category from database
-        return view('category', [
-            'category' => $category,
-            'articles' => []
-        ]);
+        $posts = $category->posts()->latest()->paginate(10);
+        return view('category', compact('category', 'posts'));
     }
 
     /**
@@ -49,11 +40,11 @@ class NewsController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('q');
-        
+
         // TODO: Implement search functionality
         return view('search', [
             'query' => $query,
             'results' => []
         ]);
     }
-} 
+}

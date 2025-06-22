@@ -23,35 +23,37 @@
         <div class="lg:col-span-3">
             <!-- Article Header -->
             <div class="mb-8">
-                <div class="flex items-center space-x-4 space-x-reverse mb-4">
-                    <a href="#" class="bg-indigo-500 text-white px-4 py-2 rounded-full text-sm urdu-text font-medium">
-                        سیاست
-                    </a>
-                    <span class="text-slate-500 text-sm urdu-text">2 گھنٹے پہلے</span>
+                <div class="flex flex-wrap items-center gap-2 mb-4">
+                    @foreach($post->categories as $category)
+                        <a href="{{$category->url()}}" class="bg-indigo-500 text-white px-4 py-2 rounded-full text-sm urdu-text font-medium">
+                            {{$category->name}}
+                        </a>
+                   @endforeach
                 </div>
-                <h1 class="text-4xl font-bold text-slate-800 mb-6 urdu-text leading-relaxed">
-                    وزیر اعظم کا اہم بیان - نئی پالیسی کا اعلان
+                <span class="text-slate-500 text-sm urdu-text">{{$post->created_at->diffForHumans()}}</span>
+                <h1 class="text-4xl mt-4 font-bold text-slate-800 mb-6 urdu-text leading-relaxed">
+                   {{$post->title}}
                 </h1>
                 <div class="flex items-center space-x-4 space-x-reverse text-slate-500 text-sm">
                     <div class="flex items-center">
                         <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
                         </svg>
-                        <span class="urdu-text">احمد علی</span>
+                        <span class="urdu-text">ایڈمن</span>
                     </div>
                     <div class="flex items-center">
                         <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                         </svg>
-                        <span class="urdu-text">اسلام آباد</span>
+                        <span class="urdu-text">پاکستان</span>
                     </div>
                 </div>
             </div>
 
             <!-- Featured Image -->
             <div class="mb-8">
-                <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?w=800&h=400&fit=crop" alt="وزیر اعظم کا اہم بیان" class="w-full h-[400px] object-cover rounded-2xl">
-                <p class="text-slate-500 text-sm mt-2 urdu-text text-center">وزیر اعظم پریس کانفرنس میں نئی پالیسی کا اعلان کرتے ہوئے</p>
+                <img src="{{$post->image}}" alt="{{$post->title}}" class="w-full h-[400px] object-cover rounded-2xl">
+                <p class="text-slate-500 text-sm mt-2 urdu-text text-center">{{$post->title}}</p>
             </div>
 
             <!-- In-Content Ad Space -->
@@ -68,16 +70,8 @@
             </div>
 
             <!-- Article Content -->
-            <div class="prose prose-lg max-w-none mb-8">
-                <p class="urdu-text text-lg leading-relaxed">
-                    وزیر اعظم نے آج ایک اہم پریس کانفرنس میں نئی پالیسی کا اعلان کیا جس کا مقصد عوام کی فلاح و بہبود میں بہتری لانا ہے۔ اس پالیسی کے تحت مختلف شعبوں میں اصلاحات کی جائیں گی اور عوام کو بہتر سہولات فراہم کی جائیں گی۔
-                </p>
-                <p class="urdu-text text-lg leading-relaxed">
-                    نئی پالیسی کے تحت تعلیم، صحت، روزگار اور معیشت کے شعبوں میں اہم اقدامات کیے جائیں گے۔ وزیر اعظم نے کہا کہ حکومت عوام کی فلاح و بہبود کے لیے ہر ممکن کوشش کرے گی۔
-                </p>
-                <p class="urdu-text text-lg leading-relaxed">
-                    پریس کانفرنس میں موجود صحافیوں سے بات کرتے ہوئے وزیر اعظم نے کہا کہ نئی پالیسی کے تحت تعلیمی اداروں میں معیار کو بہتر بنایا جائے گا اور طلباء کو جدید تعلیم فراہم کی جائے گی۔
-                </p>
+            <div class="prose prose-lg max-w-none mb-8 leading-[3] font-medium text-xl">
+                {!! $post->content !!}
             </div>
 
             <!-- Bottom Ad Space -->
@@ -269,7 +263,7 @@
             <div class="mb-6">
                 <label class="block text-sm font-medium text-slate-700 mb-2 urdu-text">پوسٹ کا لنک</label>
                 <div class="flex">
-                    <input type="text" id="shareLink" value="https://dailyurdu.com/news/وزیر-اعظم-کا-اہم-بیان-نئی-پالیسی-کا-اعلان" readonly class="flex-1 px-3 py-2 border border-slate-300 rounded-r-lg bg-slate-50 text-slate-600 text-sm">
+                    <input type="text" id="shareLink" value="{{$post->url()}}" readonly class="flex-1 px-3 py-2 border border-slate-300 rounded-r-lg bg-slate-50 text-slate-600 text-sm">
                     <button onclick="copyLink()" class="bg-indigo-600 text-white px-4 py-2 rounded-l-lg hover:bg-indigo-700 transition-colors text-sm font-medium">
                         کاپی
                     </button>
@@ -280,7 +274,7 @@
             <!-- Social Media Buttons -->
             <div class="space-y-3">
                 <h4 class="text-sm font-medium text-slate-700 mb-3 urdu-text">سوشل میڈیا پر شیئر کریں</h4>
-                
+
                 <!-- Facebook -->
                 <button onclick="shareToFacebook()" class="w-full flex items-center space-x-3 space-x-reverse p-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -339,7 +333,7 @@
         linkInput.select();
         linkInput.setSelectionRange(0, 99999);
         document.execCommand('copy');
-        
+
         const copyMessage = document.getElementById('copyMessage');
         copyMessage.classList.remove('hidden');
         setTimeout(() => {
@@ -384,4 +378,4 @@
         }
     });
 </script>
-@endsection 
+@endsection

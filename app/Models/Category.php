@@ -8,8 +8,13 @@ class Category extends Model
 {
     protected $fillable = ['name', 'slug'];
 
+    public function url()
+    {
+        return url("/category/".$this->slug);
+    }
     public function posts()
     {
         return $this->belongsToMany(Post::class, 'category_post');
     }
+
 }

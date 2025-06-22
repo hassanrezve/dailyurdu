@@ -23,116 +23,39 @@
         <div class="lg:col-span-3">
             <!-- Category Header -->
             <div class="mb-8">
-                <h1 class="text-4xl font-bold text-slate-800 mb-4 urdu-text">سیاست</h1>
-                <p class="text-slate-600 urdu-text text-lg">تازہ ترین سیاسی خبریں اور اپڈیٹس</p>
+                <h1 class="text-4xl font-bold text-slate-800 my-4 urdu-text">{{$category->name}}</h1>
+                <p class="text-slate-600 urdu-text text-lg mt-4">تازہ ترین خبریں اور اپڈیٹس</p>
             </div>
 
             <!-- News Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <!-- News Article 1 -->
+                @foreach($posts as $post)
                 <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
+                        <img src="{{$post->image}}" alt="{{$category->name}}" class="w-full h-48 object-cover">
                         <div class="absolute top-4 right-4">
                             <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">سیاست</span>
                         </div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                            قومی اسمبلی میں اہم بل کی منظوری
+                        <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-loose">
+                            {{$post->title}}
                         </h3>
-                        <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                            قومی اسمبلی نے آج ایک اہم بل کی منظوری دے دی جس سے عوام کو بہت فائدہ ہوگا...
+                        <p class="text-slate-600 text-sm urdu-text leading-loose mb-4">
+                            {{ Str::limit(strip_tags($post->content), 120) }}
                         </p>
                         <div class="flex items-center justify-between">
-                            <span class="text-slate-400 text-xs urdu-text">1 گھنٹہ پہلے</span>
-                            <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium urdu-text text-sm">تفصیل</a>
+                            <span class="text-slate-400 text-xs urdu-text">{{$post->date}}</span>
+                            <a href="{{$post->url()}}" class="text-indigo-600 hover:text-indigo-800 font-medium urdu-text text-sm">تفصیل</a>
                         </div>
                     </div>
                 </article>
+                @endforeach
 
-                <!-- News Article 2 -->
-                <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                        <div class="absolute top-4 right-4">
-                            <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">سیاست</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                            وزیر خارجہ کا اہم بیان
-                        </h3>
-                        <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                            وزیر خارجہ نے بین الاقوامی تعلقات کے حوالے سے اہم بیان دیا...
-                        </p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400 text-xs urdu-text">2 گھنٹے پہلے</span>
-                            <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium urdu-text text-sm">تفصیل</a>
-                        </div>
-                    </div>
-                </article>
             </div>
 
-            <!-- In-Content Ad Space
-            <div class="my-8">
-                <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-                    <div class="w-full h-[250px] bg-slate-100 rounded-xl flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="text-slate-400 text-sm font-semibold mb-1">Advertisement</div>
-                            <div class="text-slate-500 text-xs urdu-text">اشتہار</div>
-                            <div class="text-slate-400 text-xs mt-1">300 x 250 Banner</div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
 
-            <!-- More News Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <!-- News Article 3 -->
-                <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                        <div class="absolute top-4 right-4">
-                            <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">سیاست</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                            نئی حکومتی پالیسی کا اعلان
-                        </h3>
-                        <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                            حکومت نے نئی پالیسی کا اعلان کیا جس سے عوام کو بہت فائدہ ہوگا...
-                        </p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400 text-xs urdu-text">3 گھنٹے پہلے</span>
-                            <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium urdu-text text-sm">تفصیل</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- News Article 4 -->
-                <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1576085898323-218337e3e43c?w=400&h=250&fit=crop" alt="خبر" class="w-full h-48 object-cover">
-                        <div class="absolute top-4 right-4">
-                            <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">سیاست</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-relaxed">
-                            سیاسی جماعتوں کا اجلاس
-                        </h3>
-                        <p class="text-slate-600 text-sm urdu-text leading-relaxed mb-4">
-                            سیاسی جماعتوں نے اہم اجلاس میں شرکت کی اور اہم فیصلے کیے...
-                        </p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400 text-xs urdu-text">4 گھنٹے پہلے</span>
-                            <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium urdu-text text-sm">تفصیل</a>
-                        </div>
-                    </div>
-                </article>
-            </div>
 
             <!-- Bottom Ad Space -->
             <div class="mb-8">
@@ -147,18 +70,7 @@
                 </div>
             </div>
 
-            <!-- Pagination -->
-            <div class="flex justify-center space-x-2 space-x-reverse mb-12">
-                <a href="#" class="bg-white text-slate-600 px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
-                    <span class="urdu-text">پچھلا</span>
-                </a>
-                <a href="#" class="bg-indigo-600 text-white px-4 py-2 rounded-lg">1</a>
-                <a href="#" class="bg-white text-slate-600 px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">2</a>
-                <a href="#" class="bg-white text-slate-600 px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">3</a>
-                <a href="#" class="bg-white text-slate-600 px-4 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
-                    <span class="urdu-text">اگلا</span>
-                </a>
-            </div>
+            {{$posts->links()}}
         </div>
 
         <!-- Sidebar -->
@@ -237,4 +149,4 @@
         </div>
     </div>
 </main>
-@endsection 
+@endsection

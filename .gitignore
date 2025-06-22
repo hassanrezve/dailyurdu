@@ -34,7 +34,7 @@ Thumbs.db
 /dist
 /storage/*.key
 /storage/pail
-
+/public/wp-content
 # Laravel & Dev Tools
 .phpactor.json
 Homestead.json

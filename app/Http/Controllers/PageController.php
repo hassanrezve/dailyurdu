@@ -2,10 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+
+    public function index()
+    {
+        $feature = Post::latest()->first();
+        $ids=[3,8,21,10,4];
+        $categories = Category::whereIn('id',$ids)->with(['posts' => function ($query) {
+            $query->latest()->take(4);
+        }])->get();
+
+        return view('home', compact('feature', 'categories'));
+    }
+
     /**
      * Display the about page.
      *
@@ -77,4 +91,4 @@ class PageController extends Controller
     {
         return view('careers');
     }
-} 
+}

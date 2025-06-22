@@ -26,10 +26,10 @@
             <div>
                 <h4 class="text-xl font-bold mb-4 urdu-text">نیوز لیٹر</h4>
                 <p class="text-slate-400 mb-4 urdu-text">تازہ ترین خبروں کے لیے ہمارے نیوز لیٹر میں شامل ہوں</p>
-                <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex gap-2">
+                <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col sm:flex-row gap-2">
                     @csrf
-                    <input type="email" name="email" class="flex-1 px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white placeholder-slate-400" placeholder="آپ کا ای میل ایڈریس">
-                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-105 urdu-text">
+                    <input type="email" name="email" class="flex-1 px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white placeholder-slate-400 w-full sm:w-auto" placeholder="آپ کا ای میل ایڈریس">
+                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-105 urdu-text w-full sm:w-auto">
                         سبسکرائب
                     </button>
                 </form>
@@ -37,7 +37,7 @@
         </div>
 
         <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             <!-- Contact Information -->
             <div>
                 <h4 class="text-xl font-bold mb-4 urdu-text gradient-text">رابطہ</h4>
