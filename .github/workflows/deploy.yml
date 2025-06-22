@@ -37,9 +37,7 @@ jobs:
             # Copy new build content
             cp -r /home/dailyurd/dailyurdu/public/build/* /home/dailyurd/dev.dailyurdu.net/build/
 
-            # Remove all files and folders in public/ except the build folder
-            find /home/dailyurd/dailyurdu/public/ -maxdepth 1 -mindepth 1 \
-              -not -name build -exec rm -rf {} \;
+       
 
             # Remove build/assets from the copied build folder
             rm -rf /home/dailyurd/dev.dailyurdu.net/build/assets
