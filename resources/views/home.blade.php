@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'روزانہ اردو - تازہ ترین خبریں')
+@section('title', 'Daily Urdu – Daily Urdu News)
 
 @section('content')
 <!-- Main Content -->
