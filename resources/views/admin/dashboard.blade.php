@@ -96,7 +96,7 @@
                         <div class="flex items-center space-x-3">
                             <div class="flex-shrink-0">
                                 @if($post->image_url)
-                                    <img class="h-10 w-10 rounded object-cover" src="{{ asset($post->image_url) }}" alt="{{ $post->title }}">
+                                    <img class="h-10 w-10 rounded object-cover" src="{{ $post->image }}" alt="{{ $post->title }}">
                                 @else
                                     <div class="h-10 w-10 rounded bg-gray-200 flex items-center justify-center">
                                         <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@
                         <div class="flex items-center space-x-3">
                             <div class="flex-shrink-0">
                                 @if($post->image_url)
-                                    <img class="h-10 w-10 rounded object-cover" src="{{ asset($post->image_url) }}" alt="{{ $post->title }}">
+                                    <img class="h-10 w-10 rounded object-cover" src="{{ $post->image }}" alt="{{ $post->title }}">
                                 @else
                                     <div class="h-10 w-10 rounded bg-gray-200 flex items-center justify-center">
                                         <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

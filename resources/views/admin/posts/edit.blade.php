@@ -34,9 +34,9 @@
         <div class="mb-4">
             <label class="block text-gray-700">Image</label>
             @if($post->image_url)
-                <div class="mb-2">
-                    <p class="text-sm text-gray-600">Current image:</p>
-                    <img src="{{ asset($post->image_url) }}" alt="{{ $post->title }}" class="h-20 w-20 object-cover rounded">
+                <div class="mt-2">
+                    <p class="text-sm text-gray-600">Current Image:</p>
+                    <img src="{{ $post->image }}" alt="{{ $post->title }}" class="h-20 w-20 object-cover rounded">
                 </div>
             @endif
             <input type="file" name="image_url" class="mt-1 block w-full">

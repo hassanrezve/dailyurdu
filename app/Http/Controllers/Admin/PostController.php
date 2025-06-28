@@ -43,7 +43,7 @@ class PostController extends Controller
             'status' => $request->status,
         ];
 
-        // Handle image upload to public folder
+        // Handle image upload to public folder for new images only
         if ($request->hasFile('image_url')) {
             $image = $request->file('image_url');
             $imageName = time() . '_' . $image->getClientOriginalName();
@@ -83,11 +83,13 @@ class PostController extends Controller
             'status' => $request->status,
         ];
 
-        // Handle image upload to public folder
+        // Handle image upload to public folder for new images only
         if ($request->hasFile('image_url')) {
-            // Delete old image if exists
-            if ($post->image_url && file_exists(public_path($post->image_url))) {
-                unlink(public_path($post->image_url));
+            // Only delete old image if it's in the new public folder structure
+            if ($post->image_url && str_starts_with($post->image_url, 'uploads/posts/')) {
+                if (file_exists(public_path($post->image_url))) {
+                    unlink(public_path($post->image_url));
+                }
             }
             
             $image = $request->file('image_url');
@@ -105,9 +107,11 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        // Delete image from public folder if exists
-        if ($post->image_url && file_exists(public_path($post->image_url))) {
-            unlink(public_path($post->image_url));
+        // Only delete image if it's in the new public folder structure
+        if ($post->image_url && str_starts_with($post->image_url, 'uploads/posts/')) {
+            if (file_exists(public_path($post->image_url))) {
+                unlink(public_path($post->image_url));
+            }
         }
 
         $post->delete();
