@@ -15,18 +15,21 @@
                         <div class="bg-white text-red-600 px-4 py-2 rounded-full text-sm font-bold ml-4 animate-pulse">
                             <span class="urdu-text">لیڈ خبر</span>
                         </div>
-                        <span class="urdu-text font-semibold text-lg">اہم خبر: پاکستان میں نئی ٹیکنالوجی کا اعلان</span>
+                        <span class="urdu-text font-semibold text-lg">اہم خبر: {{ $feature ? $feature->title : 'تازہ ترین خبریں' }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- Featured Article -->
+            @if($feature)
             <article class="news-card bg-white rounded-3xl shadow-lg overflow-hidden mb-12 border border-slate-100">
                 <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&h=400&fit=crop" alt="خبر کی تصویر" class="w-full h-80 object-cover">
+                    <img src="{{ $feature->image }}" alt="{{ $feature->title }}" class="w-full h-80 object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div class="absolute bottom-4 right-4">
-                        <span class="bg-indigo-600 text-white px-4 py-2 rounded-full text-sm urdu-text font-medium">سیاست</span>
+                        @if($feature->categories->isNotEmpty())
+                            <span class="bg-indigo-600 text-white px-4 py-2 rounded-full text-sm urdu-text font-medium">{{ $feature->categories->first()->name }}</span>
+                        @endif
                     </div>
                 </div>
                 <div class="p-8">
@@ -35,34 +38,26 @@
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                             </svg>
-                            <span class="urdu-text">2 گھنٹے پہلے</span>
-        </div>
-        </div>
+                            <span class="urdu-text">{{ $feature->created_at->diffForHumans() }}</span>
+                        </div>
+                    </div>
                     <h2 class="text-3xl font-bold text-slate-800 mb-4 urdu-text leading-relaxed">
-                        پاکستان میں نئی حکومتی پالیسی کا اعلان - شہریوں کے لیے بہتری کے اقدامات
+                        {{ $feature->title }}
                     </h2>
                     <p class="text-slate-600 urdu-text leading-relaxed mb-6 text-lg">
-                        وزیر اعظم نے آج ایک اہم پریس کانفرنس میں نئی پالیسی کا اعلان کیا جس کا مقصد عوام کی فلاح و بہبود میں بہتری لانا ہے۔ اس پالیسی کے تحت مختلف شعبوں میں اصلاحات کی جائیں گی اور عوام کو بہتر سہولات فراہم کی جائیں گی۔
+                        {{ Str::limit(strip_tags($feature->content), 200) }}
                     </p>
                     <div class="flex items-center justify-between">
-                        <a href="#" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold urdu-text hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        <a href="{{ route('post.show', $feature->slug) }}" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold urdu-text hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                             مکمل خبر پڑھیں
                         </a>
                         <div class="flex items-center space-x-4 space-x-reverse">
-                            <button class="text-slate-400 hover:text-indigo-600 transition-colors">
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/>
-                                </svg>
-                            </button>
-                            <button class="text-slate-400 hover:text-indigo-600 transition-colors">
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"/>
-                                </svg>
-                            </button>
+                            <span class="text-slate-400 text-sm urdu-text">👁️ {{ $feature->views }} بار دیکھا گیا</span>
                         </div>
                     </div>
                 </div>
             </article>
+            @endif
 
             <!-- Category Sections -->
             @foreach($categories as $category)
@@ -81,7 +76,7 @@
                             @foreach($category->posts as $post)
                                 <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
                                     <div class="relative">
-                                        <img src="{{ asset($post->image) }}" alt="خبر" class="w-full h-48 object-cover">
+                                        <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full h-48 object-cover">
                                         <div class="absolute top-4 right-4">
                                             <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">{{ $category->name }}</span>
                                         </div>

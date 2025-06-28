@@ -13,6 +13,7 @@
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categories</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Featured</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
@@ -31,6 +32,15 @@
                             {{ ucfirst($post->status) }}
                         </span>
                     </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        @if($post->featured)
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                ⭐ Featured
+                            </span>
+                        @else
+                            <span class="text-gray-400 text-xs">-</span>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">{{ number_format($post->views) }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <a href="{{ route('admin.posts.edit', $post) }}" class="text-blue-600 hover:text-blue-900 mr-2">Edit</a>
@@ -43,7 +53,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">No posts found.</td>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">No posts found.</td>
                 </tr>
             @endforelse
         </tbody>

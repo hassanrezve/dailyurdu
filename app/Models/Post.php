@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\Cache;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'slug', 'content', 'image_url', 'views', 'status'];
+    protected $fillable = ['title', 'slug', 'content', 'image_url', 'views', 'status', 'featured'];
+
+    protected $casts = [
+        'featured' => 'boolean',
+    ];
 
     // Add default eager loading for categories
     protected $with = ['categories'];
@@ -33,7 +37,9 @@ class Post extends Model
         $newsCacheKeys = [
             'recent_articles',
             'global_latest_news',
-            'popular_articles'
+            'popular_articles',
+            'home_featured_post',
+            'home_categories'
         ];
 
         foreach ($newsCacheKeys as $key) {
@@ -92,5 +98,11 @@ class Post extends Model
     public function scopeRecent($query, $limit = 6)
     {
         return $query->latest()->take($limit);
+    }
+
+    // Add scope for featured posts
+    public function scopeFeatured($query)
+    {
+        return $query->where('featured', true);
     }
 }

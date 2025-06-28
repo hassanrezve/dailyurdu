@@ -21,7 +21,7 @@ class PostController extends Controller
 
     public function create()
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::where('id', '!=', 1)->orderBy('name')->get();
         return view('admin.posts.create', compact('categories'));
     }
 
@@ -32,8 +32,14 @@ class PostController extends Controller
             'content' => 'required|string',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'categories' => 'required|array|min:1',
-            'categories.*' => 'exists:categories,id',
+            'categories.*' => 'exists:categories,id|not_in:1',
             'status' => 'required|in:draft,published',
+            'featured' => 'nullable',
+        ], [
+            'categories.required' => 'Please select at least one category.',
+            'categories.min' => 'Please select at least one category.',
+            'categories.*.exists' => 'One or more selected categories are invalid.',
+            'categories.*.not_in' => 'Category ID 1 is not allowed.',
         ]);
 
         $data = [
@@ -41,6 +47,7 @@ class PostController extends Controller
             'slug' => Str::slug($request->title),
             'content' => $request->content,
             'status' => $request->status,
+            'featured' => $request->has('featured'),
         ];
 
         // Handle image upload to public folder for new images only
@@ -49,6 +56,11 @@ class PostController extends Controller
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('uploads/posts'), $imageName);
             $data['image_url'] = 'uploads/posts/' . $imageName;
+        }
+
+        // Ensure only one featured post exists
+        if ($data['featured']) {
+            $this->unsetAllFeaturedPosts();
         }
 
         $post = Post::create($data);
@@ -60,8 +72,8 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        $categories = Category::orderBy('name')->get();
-        $selectedCategories = $post->categories->pluck('id')->toArray();
+        $categories = Category::where('id', '!=', 1)->orderBy('name')->get();
+        $selectedCategories = $post->categories->where('id', '!=', 1)->pluck('id')->toArray();
         return view('admin.posts.edit', compact('post', 'categories', 'selectedCategories'));
     }
 
@@ -72,8 +84,14 @@ class PostController extends Controller
             'content' => 'required|string',
             'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'categories' => 'required|array|min:1',
-            'categories.*' => 'exists:categories,id',
+            'categories.*' => 'exists:categories,id|not_in:1',
             'status' => 'required|in:draft,published',
+            'featured' => 'nullable',
+        ], [
+            'categories.required' => 'Please select at least one category.',
+            'categories.min' => 'Please select at least one category.',
+            'categories.*.exists' => 'One or more selected categories are invalid.',
+            'categories.*.not_in' => 'Category ID 1 is not allowed.',
         ]);
 
         $data = [
@@ -81,6 +99,7 @@ class PostController extends Controller
             'slug' => Str::slug($request->title),
             'content' => $request->content,
             'status' => $request->status,
+            'featured' => $request->has('featured'),
         ];
 
         // Handle image upload to public folder for new images only
@@ -96,6 +115,11 @@ class PostController extends Controller
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('uploads/posts'), $imageName);
             $data['image_url'] = 'uploads/posts/' . $imageName;
+        }
+
+        // Ensure only one featured post exists
+        if ($data['featured']) {
+            $this->unsetAllFeaturedPosts($post->id);
         }
 
         $post->update($data);
@@ -118,5 +142,19 @@ class PostController extends Controller
 
         return redirect()->route('admin.posts.index')
             ->with('success', 'Post deleted successfully.');
+    }
+
+    /**
+     * Unset all featured posts except the current one (if provided)
+     */
+    private function unsetAllFeaturedPosts($excludePostId = null)
+    {
+        $query = Post::where('featured', true);
+        
+        if ($excludePostId) {
+            $query->where('id', '!=', $excludePostId);
+        }
+        
+        $query->update(['featured' => false]);
     }
 } 
