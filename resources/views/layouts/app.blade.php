@@ -162,74 +162,29 @@
             const searchModal = document.getElementById('searchModal');
             const closeSearchModal = document.getElementById('closeSearchModal');
             const searchInput = document.getElementById('searchInput');
-            const searchSuggestions = document.getElementById('searchSuggestions');
-
-            // Show suggestions when input is focused
-            searchInput.addEventListener('focus', () => {
-                searchSuggestions.classList.remove('hidden');
-            });
-
-            // Hide suggestions when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
-                    searchSuggestions.classList.add('hidden');
-                }
-            });
-
-            // Handle search input
-            searchInput.addEventListener('input', (e) => {
-                const value = e.target.value;
-                if (value.length > 0) {
-                    searchSuggestions.classList.remove('hidden');
-                } else {
-                    searchSuggestions.classList.add('hidden');
-                }
-            });
-
-            // Handle suggestion clicks
-            document.querySelectorAll('#searchSuggestions button').forEach(button => {
-                button.addEventListener('click', () => {
-                    searchInput.value = button.textContent;
-                    searchSuggestions.classList.add('hidden');
-                    // Here you would typically trigger the search
-                });
-            });
-
-            // Handle popular search clicks
-            document.querySelectorAll('.border-t button').forEach(button => {
-                button.addEventListener('click', () => {
-                    searchInput.value = button.textContent;
-                    // Here you would typically trigger the search
-                });
-            });
 
             searchButton.addEventListener('click', () => {
                 searchModal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
-                // Focus the search input when modal opens
                 setTimeout(() => searchInput.focus(), 100);
             });
 
             closeSearchModal.addEventListener('click', () => {
                 searchModal.classList.add('hidden');
                 document.body.style.overflow = '';
-                searchSuggestions.classList.add('hidden');
             });
 
             searchModal.addEventListener('click', (e) => {
                 if (e.target === searchModal) {
                     searchModal.classList.add('hidden');
                     document.body.style.overflow = '';
-                    searchSuggestions.classList.add('hidden');
                 }
             });
 
-            // Close modal on escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !searchModal.classList.contains('hidden')) {
                     searchModal.classList.add('hidden');
                     document.body.style.overflow = '';
-                    searchSuggestions.classList.add('hidden');
                 }
             });
         </script>

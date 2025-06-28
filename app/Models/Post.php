@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'slug', 'content', 'image_url'];
+    protected $fillable = ['title', 'slug', 'content', 'image_url', 'views'];
 
     public function categories()
     {
@@ -14,9 +14,13 @@ class Post extends Model
     }
 
     public function getImageAttribute()
-    {
-        return $this->image_url ? asset($this->image_url): asset('/noimage.png');
+{
+    $imagePath = public_path($this->image_url);
+    if ($this->image_url && file_exists($imagePath)) {
+        return asset($this->image_url);
     }
+    return asset('/noimage.png');
+}
     public function url()
     {
         return url("/news/".$this->slug);

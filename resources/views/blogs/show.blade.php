@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     <h1 class="mb-3">{{ $post->title }}</h1>
+    <p class="text-slate-400 text-xs urdu-text mb-3">👁️ {{ $post->views }} بار دیکھا گیا</p>
 
     @if($post->image_url)
         <img src="{{ asset($post->image_url) }}" alt="{{ $post->title }}" class="img-fluid mb-4">

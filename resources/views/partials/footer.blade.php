@@ -7,13 +7,12 @@
             <div>
                 <h4 class="text-xl font-bold mb-4 urdu-text">تلاش کریں</h4>
                 <div class="my-3 flex flex-wrap gap-2">
-                    <button class="px-3 py-1 bg-slate-700/50 hover:bg-slate-600 rounded-full text-slate-300 text-sm urdu-text transition-colors">کرکٹ</button>
-                    <button class="px-3 py-1 bg-slate-700/50 hover:bg-slate-600 rounded-full text-slate-300 text-sm urdu-text transition-colors">سیاست</button>
-                    <button class="px-3 py-1 bg-slate-700/50 hover:bg-slate-600 rounded-full text-slate-300 text-sm urdu-text transition-colors">تعلیم</button>
-                    <button class="px-3 py-1 bg-slate-700/50 hover:bg-slate-600 rounded-full text-slate-300 text-sm urdu-text transition-colors">صحت</button>
+                    @foreach($footerCategories as $category)
+                        <button class="footer-search-btn px-3 py-1 bg-slate-700/50 hover:bg-slate-600 rounded-full text-slate-300 text-sm urdu-text transition-colors">{{ $category->name }}</button>
+                    @endforeach
                 </div>
-                <form action="{{ route('news.search') }}" method="GET" class="relative">
-                    <input type="text" name="q" class="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white placeholder-slate-400" placeholder="خبر، موضوع یا کلیدی الفاظ لکھیں...">
+                <form action="{{ route('news.search') }}" method="GET" class="relative" id="footerSearchForm">
+                    <input type="text" name="q" class="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-white placeholder-slate-400" placeholder="خبر، موضوع یا کلیدی الفاظ لکھیں..." id="footerSearchInput">
                     <button type="submit" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-indigo-400 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -107,4 +106,17 @@
             <p class="text-slate-400 text-sm urdu-text">© {{ date('Y') }} اردو نیوز - تمام حقوق محفوظ ہیں | Made with ❤️ in Pakistan</p>
         </div>
     </div>
-</footer> 
+</footer>
+
+<script>
+document.querySelectorAll('.footer-search-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var input = document.getElementById('footerSearchInput');
+        // Only fill the input, do NOT submit the form
+        if (input) {
+            input.value = btn.textContent;
+        }
+    });
+});
+</script> 
