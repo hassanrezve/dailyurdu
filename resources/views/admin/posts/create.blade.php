@@ -64,4 +64,17 @@
         </div>
     </form>
 </div>
-@endsection 
+@endsection
+
+@push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        ClassicEditor.create(document.querySelector('textarea[name="content"]'))
+            .then(editor => {
+                editor.ui.view.editable.element.style.minHeight = '400px';
+            })
+            .catch(error => console.error(error));
+    });
+</script>
+@endpush
