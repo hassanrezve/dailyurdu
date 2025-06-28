@@ -3,10 +3,43 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'slug', 'content', 'image_url', 'views'];
+    protected $fillable = ['title', 'slug', 'content', 'image_url', 'views', 'status'];
+
+    // Add default eager loading for categories
+    protected $with = ['categories'];
+
+    protected static function booted()
+    {
+        // Clear news cache when posts are created, updated, or deleted
+        static::created(function ($post) {
+            static::clearNewsCache();
+        });
+
+        static::updated(function ($post) {
+            static::clearNewsCache();
+        });
+
+        static::deleted(function ($post) {
+            static::clearNewsCache();
+        });
+    }
+
+    private static function clearNewsCache()
+    {
+        $newsCacheKeys = [
+            'recent_articles',
+            'global_latest_news',
+            'popular_articles'
+        ];
+
+        foreach ($newsCacheKeys as $key) {
+            Cache::forget($key);
+        }
+    }
 
     public function categories()
     {
@@ -14,18 +47,37 @@ class Post extends Model
     }
 
     public function getImageAttribute()
-{
-    $imagePath = public_path($this->image_url);
-    if ($this->image_url && file_exists($imagePath)) {
-        return asset($this->image_url);
+    {
+        if (!$this->image_url) {
+            return asset('/noimage.png');
+        }
+        
+        // Check if image exists in public folder
+        if (file_exists(public_path($this->image_url))) {
+            return asset($this->image_url);
+        }
+        
+        return asset('/noimage.png');
     }
-    return asset('/noimage.png');
-}
+    
     public function url()
     {
         return url("/news/".$this->slug);
     }
+    
     public function getDateAttribute(){
         return $this->created_at->diffForHumans();
+    }
+
+    // Add scope for popular posts
+    public function scopePopular($query, $limit = 6)
+    {
+        return $query->orderBy('views', 'desc')->take($limit);
+    }
+
+    // Add scope for recent posts
+    public function scopeRecent($query, $limit = 6)
+    {
+        return $query->latest()->take($limit);
     }
 }

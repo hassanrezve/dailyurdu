@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +26,6 @@ Route::get('/', [PageController::class, 'index'])->name('home');
 // News routes
 Route::get('/news/{post:slug}', [NewsController::class, 'show'])->name('post.show');
 Route::get('/category/{category:slug}', [NewsController::class, 'category'])->name('news.category');
-
 Route::get('/search', [NewsController::class, 'search'])->name('news.search');
 
 // Static pages
@@ -37,14 +39,16 @@ Route::post('/contact', [PageController::class, 'submitContact'])->name('contact
 // Newsletter Routes
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+// Admin Routes
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Categories
+    Route::resource('categories', CategoryController::class);
+    
+    // Posts
+    Route::resource('posts', PostController::class);
+});
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-// require __DIR__.'/auth.php';
+// Auth routes
+require __DIR__.'/auth.php';

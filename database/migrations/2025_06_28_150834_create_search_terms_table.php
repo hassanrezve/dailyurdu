@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('term')->unique();
             $table->unsignedInteger('count')->default(1);
             $table->timestamps();
+            
+            // Add index for count column (used for ordering popular searches)
+            $table->index('count');
         });
     }
 

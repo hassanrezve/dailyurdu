@@ -15,9 +15,12 @@ class NewsController extends Controller
      */
     public function show(Post $post)
     {
+        // Load categories to avoid N+1 queries
+        $post->load('categories');
+        
         // Increment the views count
         $post->increment('views');
-        // TODO: Fetch news article from database using $slug
+        
         return view('news', compact("post"));
     }
 
@@ -29,7 +32,12 @@ class NewsController extends Controller
      */
     public function category(Category $category)
     {
-        $posts = $category->posts()->latest()->paginate(10);
+        // Optimize: Load posts with categories in one query
+        $posts = $category->posts()
+            ->with('categories')
+            ->latest()
+            ->paginate(10);
+            
         return view('category', compact('category', 'posts'));
     }
 
@@ -53,15 +61,17 @@ class NewsController extends Controller
             }
         }
 
-        $posts = \App\Models\Post::where(function($q) use ($query) {
-            $q->where('title', 'like', '%' . $query . '%')
-              ->orWhereHas('categories', function($catQ) use ($query) {
-                  $catQ->where('name', 'like', '%' . $query . '%');
-              });
-        })->paginate(10);
+        // Optimize: Use proper eager loading and optimize search query
+        $posts = \App\Models\Post::with('categories')
+            ->where(function($q) use ($query) {
+                $q->where('title', 'like', '%' . $query . '%')
+                  ->orWhereHas('categories', function($catQ) use ($query) {
+                      $catQ->where('name', 'like', '%' . $query . '%');
+                  });
+            })
+            ->latest()
+            ->paginate(10);
 
-
-
-        return view('blogs.index', compact('posts', 'query',));
+        return view('blogs.index', compact('posts', 'query'));
     }
 }

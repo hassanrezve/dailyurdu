@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique()->nullable();
             $table->timestamps();
+            
+            // Add index for name column (used in search queries)
+            $table->index('name');
         });
     }
 

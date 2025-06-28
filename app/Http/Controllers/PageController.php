@@ -11,11 +11,13 @@ class PageController extends Controller
 
     public function index()
     {
-        $feature = Post::latest()->first();
-        $ids=[3,8,21,10,4];
-        $categories = Category::whereIn('id',$ids)->with(['posts' => function ($query) {
-            $query->latest()->take(4);
-        }])->get();
+        $feature = Post::with('categories')->latest()->first();
+        $ids = [3, 8, 21, 10, 4];
+        $categories = Category::whereIn('id', $ids)
+            ->with(['posts' => function ($query) {
+                $query->latest()->take(4)->with('categories');
+            }])
+            ->get();
 
         return view('home', compact('feature', 'categories'));
     }
