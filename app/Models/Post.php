@@ -55,7 +55,7 @@ class Post extends Model
     public function getImageAttribute()
     {
         if (!$this->image_url) {
-            return asset('/noimage.png');
+            return asset('/noimage.webp');
         }
         
         // For new images stored in public/uploads/posts/

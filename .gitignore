@@ -30,6 +30,7 @@ Thumbs.db
 /public/storage
 /public/admin
 /public/dist
+/public/uploads
 /build
 /dist
 /storage/*.key
