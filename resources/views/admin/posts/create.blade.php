@@ -64,4 +64,15 @@
         </div>
     </form>
 </div>
-@endsection 
+@endsection
+
+@push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('textarea[name="content"]'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+@endpush
