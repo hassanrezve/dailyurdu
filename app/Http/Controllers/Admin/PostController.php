@@ -11,12 +11,19 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with('categories')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-        return view('admin.posts.index', compact('posts'));
+        $query = Post::with('categories');
+
+        if ($search = $request->input('search')) {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        $posts = $query->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->appends($request->only('search'));
+
+        return view('admin.posts.index', compact('posts', 'search'));
     }
 
     public function create()

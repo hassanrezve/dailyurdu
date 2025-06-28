@@ -6,6 +6,17 @@
     <a href="{{ route('admin.posts.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">Create Post</a>
 </div>
 
+<form method="GET" action="{{ route('admin.posts.index') }}" class="mb-4">
+    <input
+        type="text"
+        name="search"
+        value="{{ $search ?? '' }}"
+        placeholder="Search posts..."
+        class="border-gray-300 rounded-md shadow-sm w-1/3"
+    />
+    <button type="submit" class="ml-2 px-3 py-2 bg-gray-200 rounded-md">Search</button>
+</form>
+
 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
