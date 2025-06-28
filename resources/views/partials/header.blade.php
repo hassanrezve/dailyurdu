@@ -107,7 +107,7 @@
                                                                                                     <div class="flex items-center space-x-6 space-x-reverse">
                                                                                                         <div class="relative">
                                                                                                                 <a href="{{ route('home') }}">
-                                                                                                                    <img src="{{ asset('logo.jpg') }}" alt="logo" class="w-[120px] h-[120px] object-contain floating">
+                                                                                                                    <img src="{{ asset('logo.webp') }}" alt="logo" class="w-[120px] h-[120px] object-contain floating">
                                                                                                                 </a>
                                                                                                         </div>
                                                                                                     </div>
