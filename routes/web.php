@@ -50,7 +50,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('posts', PostController::class);
 });
 
-use Illuminate\Support\Facades\Route;
+
 
 Route::get('/test', function () {
     $imageRelativePath = 'uploads/posts/example.jpg';
