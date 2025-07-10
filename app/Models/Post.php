@@ -57,33 +57,17 @@ class Post extends Model
         if (!$this->image_url) {
             return asset('/noimage.webp');
         }
-        
-        // For new images stored in public/uploads/posts/
-        if (str_starts_with($this->image_url, 'uploads/posts/')) {
-            if (file_exists(public_path($this->image_url))) {
+         elseif (file_exists(url($this->image_url))) {
                 return asset($this->image_url);
             }
-        }
-        
-        // For old images that might be in storage or other locations
-        // Try to use the image_url as is (it might be a full URL or relative path)
-        if (filter_var($this->image_url, FILTER_VALIDATE_URL)) {
-            // If it's a full URL, return as is
-            return $this->image_url;
-        } else {
-            // If it's a relative path, try to serve it
-            return asset($this->image_url);
-        }
-        
-        // Fallback to no image
         return asset('/noimage.png');
     }
-    
+
     public function url()
     {
         return url("/news/".$this->slug);
     }
-    
+
     public function getDateAttribute(){
         return $this->created_at->diffForHumans();
     }

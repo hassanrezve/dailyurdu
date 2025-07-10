@@ -6,7 +6,7 @@
     <a href="{{ route('admin.posts.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">Create Post</a>
 </div>
 
-<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+<div class="bg-white shadow overflow-x-auto sm:rounded-lg">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>

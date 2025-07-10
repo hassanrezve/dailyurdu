@@ -20,7 +20,7 @@ class PageController extends Controller
                 ->featured()
                 ->latest()
                 ->first();
-                
+
             // If no featured post, get the latest published post
             if (!$featured) {
                 $featured = Post::with('categories')
@@ -28,10 +28,15 @@ class PageController extends Controller
                     ->latest()
                     ->first();
             }
-            
+
             return $featured;
         });
-
+        $featured = Post::with('categories')
+            ->where('status', 'published')
+            ->featured()
+            ->latest()
+            ->first();
+      
         // Get categories with their latest posts
         $categories = Cache::remember('home_categories', 300, function () {
             $ids = [3, 8, 21, 10, 4];
