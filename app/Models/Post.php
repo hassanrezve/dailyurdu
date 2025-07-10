@@ -57,12 +57,14 @@ class Post extends Model
         if (!$this->image_url) {
             return asset('/noimage.webp');
         }
-         elseif (file_exists(url($this->image_url))) {
-                return asset($this->image_url);
-            }
+    
+        if (file_exists(public_path($this->image_url))) {
+            return asset($this->image_url);
+        }
+    
         return asset('/noimage.png');
     }
-
+    
     public function url()
     {
         return url("/news/".$this->slug);
