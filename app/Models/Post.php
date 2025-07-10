@@ -57,9 +57,7 @@ class Post extends Model
         if (!$this->image_url) {
             return asset('/noimage.webp');
         }
-    
-       
-            return asset($this->image_url);
+             return asset($this->image_url);
         
     }
     

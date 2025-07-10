@@ -7,7 +7,6 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -50,15 +49,18 @@ class PostController extends Controller
             'featured' => $request->has('featured'),
         ];
 
-        // Handle image upload to public folder for new images only
         if ($request->hasFile('image_url')) {
+            $destinationPath = base_path('public/uploads/posts');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
             $image = $request->file('image_url');
             $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/posts'), $imageName);
+            $image->move($destinationPath, $imageName);
             $data['image_url'] = 'uploads/posts/' . $imageName;
         }
 
-        // Ensure only one featured post exists
         if ($data['featured']) {
             $this->unsetAllFeaturedPosts();
         }
@@ -102,22 +104,25 @@ class PostController extends Controller
             'featured' => $request->has('featured'),
         ];
 
-        // Handle image upload to public folder for new images only
         if ($request->hasFile('image_url')) {
-            // Only delete old image if it's in the new public folder structure
             if ($post->image_url && str_starts_with($post->image_url, 'uploads/posts/')) {
-                if (file_exists(public_path($post->image_url))) {
-                    unlink(public_path($post->image_url));
+                $oldPath = base_path('public/' . $post->image_url);
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
                 }
             }
-            
+
+            $destinationPath = base_path('public/uploads/posts');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
             $image = $request->file('image_url');
             $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('uploads/posts'), $imageName);
+            $image->move($destinationPath, $imageName);
             $data['image_url'] = 'uploads/posts/' . $imageName;
         }
 
-        // Ensure only one featured post exists
         if ($data['featured']) {
             $this->unsetAllFeaturedPosts($post->id);
         }
@@ -131,10 +136,10 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        // Only delete image if it's in the new public folder structure
         if ($post->image_url && str_starts_with($post->image_url, 'uploads/posts/')) {
-            if (file_exists(public_path($post->image_url))) {
-                unlink(public_path($post->image_url));
+            $imagePath = base_path('public/' . $post->image_url);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
             }
         }
 
@@ -144,17 +149,14 @@ class PostController extends Controller
             ->with('success', 'Post deleted successfully.');
     }
 
-    /**
-     * Unset all featured posts except the current one (if provided)
-     */
     private function unsetAllFeaturedPosts($excludePostId = null)
     {
         $query = Post::where('featured', true);
-        
+
         if ($excludePostId) {
             $query->where('id', '!=', $excludePostId);
         }
-        
+
         $query->update(['featured' => false]);
     }
-} 
+}
