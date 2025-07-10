@@ -42,12 +42,30 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 // Admin Routes
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // Categories
     Route::resource('categories', CategoryController::class);
-    
+
     // Posts
     Route::resource('posts', PostController::class);
+});
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('/test', function () {
+    $imageRelativePath = 'uploads/posts/example.jpg';
+
+    dd([
+        'base_path()' => base_path(),                            // Root of your Laravel project
+        'base_path("public")' => base_path('public'),           // Absolute path to the /public folder
+        'public_path()' => public_path(),                       // Also path to the /public folder (may not work on some setups)
+        'app_path()' => app_path(),                             // Path to the /app folder
+        'storage_path()' => storage_path(),                     // Path to the /storage folder
+        'resource_path()' => resource_path(),                   // Path to /resources
+        'public image full path via base_path' => base_path('public/' . $imageRelativePath),
+        'public image full path via concat' => base_path() . '/public/' . $imageRelativePath,
+        'URL to image (for browser)' => url($imageRelativePath), // What you use in <img src="">
+    ]);
 });
 
 // Auth routes
