@@ -58,11 +58,9 @@ class Post extends Model
             return asset('/noimage.webp');
         }
     
-        if (file_exists(public_path($this->image_url))) {
+       
             return asset($this->image_url);
-        }
-    
-        return asset('/noimage.png');
+        
     }
     
     public function url()
