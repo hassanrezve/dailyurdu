@@ -45,7 +45,7 @@
                         {{ $feature->title }}
                     </h2>
                     <p class="text-slate-600 urdu-text leading-relaxed mb-6 text-lg">
-                        {{ Str::limit(strip_tags($feature->content), 200) }}
+                        {{ Str::limit(strip_tags(html_entity_decode($feature->content)), 200) }}
                     </p>
                     <div class="flex items-center justify-between">
                         <a href="{{ route('post.show', $feature->slug) }}" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold urdu-text hover:shadow-lg transition-all duration-300 transform hover:scale-105">
@@ -107,11 +107,11 @@
         <div class="lg:col-span-1">
             <!-- Latest News -->
             @include("partials.sidebar-latest-news")
-       
+
             <!-- Popular Articles -->
             @include("partials.sidebar-popular-articles")
                  <!-- Weather Widget -->
-         
+
                  @include("partials.sidebar-weather")
         </div>
     </div>
