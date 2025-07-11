@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','{{$post->title}}')
+@section('title', $post->title)
 
 @section('content')
 <main class="container mx-auto px-4 mt-[72px]">
