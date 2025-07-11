@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+    private string $publicHtmlPath = '/home/dailyurd/public_html';
+
     public function index()
     {
         $posts = Post::with('categories')
@@ -50,7 +52,7 @@ class PostController extends Controller
         ];
 
         if ($request->hasFile('image_url')) {
-            $destinationPath = base_path('public/uploads/posts');
+            $destinationPath = $this->publicHtmlPath . '/uploads/posts';
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
@@ -106,13 +108,13 @@ class PostController extends Controller
 
         if ($request->hasFile('image_url')) {
             if ($post->image_url && str_starts_with($post->image_url, 'uploads/posts/')) {
-                $oldPath = base_path('public/' . $post->image_url);
+                $oldPath = $this->publicHtmlPath . '/' . $post->image_url;
                 if (file_exists($oldPath)) {
                     unlink($oldPath);
                 }
             }
 
-            $destinationPath = base_path('public/uploads/posts');
+            $destinationPath = $this->publicHtmlPath . '/uploads/posts';
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
@@ -137,7 +139,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         if ($post->image_url && str_starts_with($post->image_url, 'uploads/posts/')) {
-            $imagePath = base_path('public/' . $post->image_url);
+            $imagePath = $this->publicHtmlPath . '/' . $post->image_url;
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }

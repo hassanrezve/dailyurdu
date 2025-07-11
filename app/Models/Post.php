@@ -54,13 +54,22 @@ class Post extends Model
 
     public function getImageAttribute()
     {
+        $defaultImage = asset('/noimage.webp');
+
         if (!$this->image_url) {
-            return asset('/noimage.webp');
+            return $defaultImage;
         }
-             return asset($this->image_url);
-        
+
+        $imagePath = '/home/dailyurd/public_html/' . $this->image_url;
+
+        if (!file_exists($imagePath)) {
+            return $defaultImage;
+        }
+
+        return asset($this->image_url);
     }
-    
+
+
     public function url()
     {
         return url("/news/".$this->slug);
