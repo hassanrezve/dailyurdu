@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <h2 class="text-3xl font-bold text-slate-800 mb-4 urdu-text leading-relaxed">
-                        {{ $feature->title }}
+                        <a href="{{ route('post.show', $feature->slug) }}">{{ $feature->title }}</a>
                     </h2>
                     <p class="text-slate-600 urdu-text leading-relaxed mb-6 text-lg">
                         {{ Str::limit(strip_tags(html_entity_decode($feature->content)), 200) }}
