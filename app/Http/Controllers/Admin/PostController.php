@@ -58,9 +58,12 @@ class PostController extends Controller
             }
 
             $image = $request->file('image_url');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move($destinationPath, $imageName);
-            $data['image_url'] = 'uploads/posts/' . $imageName;
+            $nameWithoutExt = time() . '_' . pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $webpRelativePath = $this->convertToWebP($image, $destinationPath, $nameWithoutExt);
+
+            if ($webpRelativePath) {
+                $data['image_url'] = $webpRelativePath;
+            }
         }
 
         if ($data['featured']) {
@@ -120,9 +123,12 @@ class PostController extends Controller
             }
 
             $image = $request->file('image_url');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move($destinationPath, $imageName);
-            $data['image_url'] = 'uploads/posts/' . $imageName;
+            $nameWithoutExt = time() . '_' . pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $webpRelativePath = $this->convertToWebP($image, $destinationPath, $nameWithoutExt);
+
+            if ($webpRelativePath) {
+                $data['image_url'] = $webpRelativePath;
+            }
         }
 
         if ($data['featured']) {
@@ -160,5 +166,34 @@ class PostController extends Controller
         }
 
         $query->update(['featured' => false]);
+    }
+
+    private function convertToWebP($image, $destinationPath, $nameWithoutExt): ?string
+    {
+        $extension = strtolower($image->getClientOriginalExtension());
+        $webpPath = $destinationPath . '/' . $nameWithoutExt . '.webp';
+
+        switch ($extension) {
+            case 'jpeg':
+            case 'jpg':
+                $img = imagecreatefromjpeg($image->getRealPath());
+                break;
+            case 'png':
+                $img = imagecreatefrompng($image->getRealPath());
+                imagepalettetotruecolor($img);
+                imagealphablending($img, true);
+                imagesavealpha($img, true);
+                break;
+            case 'gif':
+                $img = imagecreatefromgif($image->getRealPath());
+                break;
+            default:
+                return null;
+        }
+
+        imagewebp($img, $webpPath, 80);
+        imagedestroy($img);
+
+        return 'uploads/posts/' . $nameWithoutExt . '.webp';
     }
 }
