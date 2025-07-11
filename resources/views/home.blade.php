@@ -26,8 +26,9 @@
                 <div class="relative">
                     <a href="{{ route('post.show', $feature->slug) }}">
                         <img src="{{ $feature->image }}" alt="{{ $feature->title }}" class="w-full h-80 object-cover">
-                    </a>
+
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    </a>
                     <div class="absolute bottom-4 right-4">
                         @if($feature->categories->isNotEmpty())
                             <span class="bg-indigo-600 text-white px-4 py-2 rounded-full text-sm urdu-text font-medium">{{ $feature->categories->first()->name }}</span>
