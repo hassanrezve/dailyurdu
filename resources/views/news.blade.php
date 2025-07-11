@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'وزیر اعظم کا اہم بیان - نئی پالیسی کا اعلان - روزانہ اردو')
+@section('title','{{$post->title}}')
 
 @section('content')
 <main class="container mx-auto px-4 mt-[72px]">
