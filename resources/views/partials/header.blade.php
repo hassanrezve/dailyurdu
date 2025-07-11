@@ -160,8 +160,10 @@
                                                                                             $more = $categories->slice(10);
                                                                                         @endphp
 
+                                                                                        <!-- Sticky Nav Placeholder -->
+                                                                                        <div id="mainNavPlaceholder" style="height:0;"></div>
                                                                                         <!-- Desktop Nav -->
-                                                                                        <nav id="mainNav" class="bg-white border-t border-slate-200 z-40 relative hidden lg:block">
+                                                                                        <nav id="mainNav" class="bg-white border-t border-slate-200 animated-border px-8 py-4">
                                                                                                 <div class="container mx-auto px-4">
                                                                                                     
                                                                                                         <!-- Home --><ul class="flex flex-wrap justify-center gap-2 py-4 px-2">

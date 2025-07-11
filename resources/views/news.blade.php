@@ -1,7 +1,22 @@
 @extends('layouts.app')
 
 @section('title', $post->title)
+@section('preload')
+ <!-- Required Open Graph Meta Tags -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="DailyUrdu">
+    <meta property="og:url" content="{{ request()->fullUrl() }}">
+    <meta property="og:title" content="{{ $post->title ?? 'DailyUrdu' }}">
+    <meta property="og:description" content="{{ $post->excerpt ?? Str::limit(strip_tags($post->content ?? ''), 150) }}">
+    <meta property="og:image" content="{{ $post->image ?? asset('/noimage.webp') }}">
+    <meta property="og:image:alt" content="{{ $post->title ?? 'DailyUrdu' }}">
 
+    <!-- Twitter Card (optional) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $post->title ?? 'DailyUrdu' }}">
+    <meta name="twitter:description" content="{{ $post->excerpt ?? Str::limit(strip_tags($post->content ?? ''), 150) }}">
+    <meta name="twitter:image" content="{{ $post->image ?? asset('/noimage.webp') }}">
+@endsection
 @section('content')
 <main class="container mx-auto px-4 mt-[72px]">
     <!-- Top Banner Ad Space -->

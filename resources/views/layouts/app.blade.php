@@ -7,6 +7,7 @@
         <title>@yield('title', 'Daily Urdu – Daily Urdu News')</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+        @yield("preload")
         <style>
             body {
                 font-family: 'Noto Nastaliq Urdu', serif;
@@ -104,90 +105,87 @@
             </svg>
         </button>
 
-        <script>
-            // Scroll to top functionality
-            const scrollButton = document.getElementById('scrollToTop');
-            const mainNav = document.getElementById('mainNav');
-            let lastScrollTop = 0;
-            
-            window.addEventListener('scroll', () => {
-                // Scroll to top button visibility
-                if (window.pageYOffset > 300) {
-                    scrollButton.classList.remove('opacity-0', 'invisible');
-                    scrollButton.classList.add('opacity-100', 'visible');
-                } else {
-                    scrollButton.classList.add('opacity-0', 'invisible');
-                    scrollButton.classList.remove('opacity-100', 'visible');
-                }
+<script>
+const mainNav = document.getElementById('mainNav');
+const mainNavPlaceholder = document.getElementById('mainNavPlaceholder');
 
-                // Navigation sticky behavior
-                const currentScroll = window.pageYOffset;
-                
-                if (currentScroll > lastScrollTop && currentScroll > 268) {
-                    // Scrolling down & past threshold
-                    if (!mainNav.classList.contains('fixed')) {
-                        mainNav.style.height = mainNav.offsetHeight + 'px';
-                        mainNav.classList.add('fixed', 'top-0', 'w-full', 'z-[100]');
-                    }
-                } else if (currentScroll < lastScrollTop || currentScroll <= 268) {
-                    // Scrolling up or at top
-                    mainNav.classList.remove('fixed', 'top-0', 'w-full', 'z-[100]');
-                    mainNav.style.height = '';
-                }
-                lastScrollTop = currentScroll;
-            });
-            
-            scrollButton.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
+function getNavHeight() {
+  return mainNav ? mainNav.offsetHeight : 0;
+}
 
-            // Add smooth scrolling to all anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
+function getNavOffset() {
+  return mainNavPlaceholder ? mainNavPlaceholder.getBoundingClientRect().top + window.pageYOffset : 0;
+}
 
-            // Search Modal Functionality
-            const searchButton = document.getElementById('searchButton');
-            const searchModal = document.getElementById('searchModal');
-            const closeSearchModal = document.getElementById('closeSearchModal');
-            const searchInput = document.getElementById('searchInput');
+window.addEventListener('scroll', () => {
+  if (window.innerWidth < 1024) {
+    mainNav.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'z-50');
+    mainNavPlaceholder.style.height = '0';
+    return;
+  }
+  const currentScroll = window.pageYOffset;
+  const navOffset = getNavOffset();
+  const navHeight = getNavHeight();
 
-            searchButton.addEventListener('click', () => {
-                searchModal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-                setTimeout(() => searchInput.focus(), 100);
-            });
+  if (currentScroll > navOffset) {
+    if (!mainNav.classList.contains('fixed')) {
+      mainNav.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'z-50');
+      mainNavPlaceholder.style.height = navHeight + 'px';
+    }
+  } else {
+    mainNav.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'z-50');
+    mainNavPlaceholder.style.height = '0';
+  }
+});
 
-            closeSearchModal.addEventListener('click', () => {
-                searchModal.classList.add('hidden');
-                document.body.style.overflow = '';
-            });
+    scrollButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
-            searchModal.addEventListener('click', (e) => {
-                if (e.target === searchModal) {
-                    searchModal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }
-            });
+    // Smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
 
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !searchModal.classList.contains('hidden')) {
-                    searchModal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }
-            });
-        </script>
+
+    // Search modal logic
+    const searchButton = document.getElementById('searchButton');
+    const searchModal = document.getElementById('searchModal');
+    const closeSearchModal = document.getElementById('closeSearchModal');
+    const searchInput = document.getElementById('searchInput');
+
+    searchButton.addEventListener('click', () => {
+        searchModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => searchInput.focus(), 100);
+    });
+
+    closeSearchModal.addEventListener('click', () => {
+        searchModal.classList.add('hidden');
+        document.body.style.overflow = '';
+    });
+
+    searchModal.addEventListener('click', (e) => {
+        if (e.target === searchModal) {
+            searchModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !searchModal.classList.contains('hidden')) {
+            searchModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    });
+</script>
+
         @stack('scripts')
     </body>
 </html>
