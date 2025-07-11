@@ -11,14 +11,18 @@
             @forelse ($posts as $post)
                 <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 mb-6 sm:mb-8">
                     <div class="flex flex-col md:flex-row">
-                        <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full md:w-64 h-48 object-cover" style="max-width: 100%;" onerror="this.onerror=null;this.src='{{ asset('noimage.png') }}';">
+                        <a href="{{ route('post.show', $post->slug) }}">
+                            <img src="{{ $post->image }}" alt="{{ $post->title }}" class="w-full md:w-64 h-48 object-cover" style="max-width: 100%;" onerror="this.onerror=null;this.src='{{ asset('noimage.png') }}';">
+                        </a>
                         <div class="p-4 sm:p-6 flex-1">
                             <div class="flex flex-wrap gap-2 mb-2">
                                 @foreach($post->categories as $category)
                                     <span class="bg-indigo-100 text-indigo-700 px-2 py-1.5 rounded-full text-xs urdu-text font-medium leading-normal">{{ $category->name }}</span>
                                 @endforeach
                             </div>
-                            <h2 class="text-lg sm:text-xl font-semibold text-slate-800 mb-2 sm:mb-3 urdu-text leading-relaxed">{{ $post->title }}</h2>
+                            <h2 class="text-lg sm:text-xl font-semibold text-slate-800 mb-2 sm:mb-3 urdu-text leading-relaxed">
+                                <a href="{{ route('post.show', $post->slug) }}">{{ $post->title }}</a>
+                            </h2>
                             <p class="text-slate-600 text-xs sm:text-sm urdu-text leading-relaxed mb-3 sm:mb-4">{!! Str::limit(strip_tags($post->content), 120) !!}</p>
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                 <span class="text-slate-400 text-xs urdu-text">{{ $post->created_at ? $post->created_at->diffForHumans() : '' }}</span>

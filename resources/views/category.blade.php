@@ -33,14 +33,16 @@
                 @foreach($posts as $post)
                 <article class="news-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
                     <div class="relative">
-                        <img src="{{$post->image}}" alt="{{$category->name}}" class="w-full h-48 object-cover">
+                        <a href="{{ $post->url() }}">
+                            <img src="{{$post->image}}" alt="{{$category->name}}" class="w-full h-48 object-cover">
+                        </a>
                         <div class="absolute top-4 right-4">
                             <span class="bg-indigo-500 text-white px-3 py-1 rounded-full text-xs urdu-text font-medium">سیاست</span>
                         </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-semibold text-slate-800 mb-3 urdu-text leading-loose">
-                            {{$post->title}}
+                            <a href="{{ $post->url() }}">{{$post->title}}</a>
                         </h3>
                         <p class="text-slate-600 text-sm urdu-text leading-loose mb-4">
                             {{ Str::limit(strip_tags($post->content), 120) }}
