@@ -9,16 +9,25 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\SearchTerm;
-
+use Illuminate\Support\Facades\File;
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
+
+
+    public function register()
     {
-        //
+        $this->app->bind('path.public', function () {
+            // Use .env override if available
+            $customPath = env('CUSTOM_PUBLIC_PATH', base_path('public'));
+
+            // Normalize and return path
+            return File::isDirectory($customPath) ? $customPath : base_path('public');
+        });
     }
+
 
     /**
      * Bootstrap any application services.
@@ -31,19 +40,19 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function ($view) {
             // Cache frequently accessed data with shorter TTLs for daily news site
             $cacheDuration = 5 * 60; // 5 minutes for static data
-            
+
             // Get popular searches with caching
             $popularSearches = Cache::remember('popular_searches', $cacheDuration, function () {
                 return SearchTerm::orderBy('count', 'desc')->take(6)->pluck('term');
             });
             $view->with('popularSearches', $popularSearches);
-            
+
             // Get all categories with caching
             $allCategories = Cache::remember('all_categories', $cacheDuration, function () {
                 return Category::orderBy('name')->get();
             });
             $view->with('allCategories', $allCategories);
-            
+
             // Get footer categories with caching
             $footerCategories = Cache::remember('footer_categories', $cacheDuration, function () {
                 return Category::where('id', '!=', 1)->inRandomOrder()->take(4)->get();
