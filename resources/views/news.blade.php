@@ -276,31 +276,31 @@
 
     function shareToFacebook() {
         const url = encodeURIComponent(document.getElementById('shareLink').value);
-        const text = encodeURIComponent('وزیر اعظم کا اہم بیان - نئی پالیسی کا اعلان');
+        const text = encodeURIComponent('DailyUrdu');
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
     }
 
     function shareToTwitter() {
         const url = encodeURIComponent(document.getElementById('shareLink').value);
-        const text = encodeURIComponent('وزیر اعظم کا اہم بیان - نئی پالیسی کا اعلان');
+        const text = encodeURIComponent('DailyUrdu');
         window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
     }
 
     function shareToWhatsApp() {
         const url = encodeURIComponent(document.getElementById('shareLink').value);
-        const text = encodeURIComponent('وزیر اعظم کا اہم بیان - نئی پالیسی کا اعلان');
+        const text = encodeURIComponent('DailyUrdu');
         window.open(`https://wa.me/?text=${text}%20${url}`, '_blank');
     }
 
     function shareToTelegram() {
         const url = encodeURIComponent(document.getElementById('shareLink').value);
-        const text = encodeURIComponent('وزیر اعظم کا اہم بیان - نئی پالیسی کا اعلان');
+        const text = encodeURIComponent('DailyUrdu');
         window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
     }
 
     function shareToLinkedIn() {
         const url = encodeURIComponent(document.getElementById('shareLink').value);
-        const text = encodeURIComponent('وزیر اعظم کا اہم بیان - نئی پالیسی کا اعلان');
+        const text = encodeURIComponent('DailyUrdu');
         window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
     }
 
