@@ -46,3 +46,13 @@ jobs:
 
             # Optional: Remove manifest.json if it exists
             rm -f /home/dailyurd/dev.dailyurdu.net/build/manifest.json
+
+             # Navigate to Laravel project
+            cd /home/dailyurd/dailyurdu
+
+            # Run Laravel cache commands
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
+            php artisan cache:clear
+            php artisan config:cache
