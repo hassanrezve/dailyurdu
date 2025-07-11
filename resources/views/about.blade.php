@@ -45,7 +45,7 @@
         </div>
 
         <!-- Team Section -->
-        <div class="bg-white rounded-3xl shadow-lg p-8 mb-12">
+        <!-- <div class="bg-white rounded-3xl shadow-lg p-8 mb-12">
             <h2 class="text-3xl font-bold text-slate-800 mb-8 urdu-text text-center">ہماری ٹیم</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
@@ -64,7 +64,7 @@
                     <p class="text-slate-600 urdu-text">ٹیکنیکل ایڈیٹر</p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Values Section -->
         <div class="bg-white rounded-3xl shadow-lg p-8">
