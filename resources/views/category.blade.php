@@ -71,7 +71,18 @@
             <div class="mb-8">
                 <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
                     <div class="w-full h-[90px] bg-slate-100 rounded-xl flex items-center justify-center">
-
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                                crossorigin="anonymous"></script>
+                        <!-- category bottom -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-1790652247481380"
+                             data-ad-slot="2388799893"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
                     </div>
                 </div>
             </div>
