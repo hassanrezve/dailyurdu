@@ -42,14 +42,16 @@ class PostController extends Controller
             'categories.*.exists' => 'One or more selected categories are invalid.',
             'categories.*.not_in' => 'Category ID 1 is not allowed.',
         ]);
+        $slug = preg_replace('/[^\p{Arabic}\p{L}\p{N}\s-]/u', '', str_replace(' ', '-', $request->title));
 
         $data = [
             'title' => $request->title,
-            'slug' => Str::slug($request->title),
+            'slug' => $slug,
             'content' => $request->content,
             'status' => $request->status,
             'featured' => $request->has('featured'),
         ];
+
 
         if ($request->hasFile('image_url')) {
             $destinationPath = $this->publicHtmlPath . '/uploads/posts';
@@ -100,10 +102,10 @@ class PostController extends Controller
             'categories.*.exists' => 'One or more selected categories are invalid.',
             'categories.*.not_in' => 'Category ID 1 is not allowed.',
         ]);
-
-        $data = [
+        $slug = preg_replace('/[^\p{Arabic}\p{L}\p{N}\s-]/u', '', str_replace(' ', '-', $request->title));
+          $data = [
             'title' => $request->title,
-            'slug' => Str::slug($request->title),
+            'slug' => $slug,
             'content' => $request->content,
             'status' => $request->status,
             'featured' => $request->has('featured'),
