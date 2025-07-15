@@ -8,11 +8,18 @@
     <div class="mb-8">
         <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
             <div class="w-full h-[90px] bg-slate-100 rounded-xl flex items-center justify-center">
-                <div class="text-center">
-                    <div class="text-slate-400 text-sm font-semibold mb-1">Advertisement</div>
-                    <div class="text-slate-500 text-xs urdu-text">اشتہار</div>
-                    <div class="text-slate-400 text-xs mt-1">728 x 90 Banner</div>
-                </div>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                        crossorigin="anonymous"></script>
+                <!-- category top -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-1790652247481380"
+                     data-ad-slot="7683062902"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
         </div>
     </div>
@@ -64,11 +71,7 @@
             <div class="mb-8">
                 <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
                     <div class="w-full h-[90px] bg-slate-100 rounded-xl flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="text-slate-400 text-sm font-semibold mb-1">Advertisement</div>
-                            <div class="text-slate-500 text-xs urdu-text">اشتہار</div>
-                            <div class="text-slate-400 text-xs mt-1">728 x 90 Banner</div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -78,9 +81,7 @@
 
         <!-- Sidebar -->
         <div class="lg:col-span-1">
-            @include('partials.sidebar-latest-news')
-            @include('partials.sidebar-popular-articles')
-            @include('partials.sidebar-weather')
+            <x-sidebar/>
         </div>
     </div>
 </main>

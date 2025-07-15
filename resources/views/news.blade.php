@@ -186,9 +186,7 @@
 
         <!-- Sidebar -->
         <div class="lg:col-span-1">
-            @include('partials.sidebar-latest-news')
-            @include('partials.sidebar-popular-articles')
-            @include('partials.sidebar-weather')
+            <x-sidebar/>
         </div>
     </div>
 </main>

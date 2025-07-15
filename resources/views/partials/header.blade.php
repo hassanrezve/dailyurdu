@@ -116,7 +116,7 @@
                                                                                                     <div class="flex-1 mx-8">
                                                                                                         <div class="ad-banner rounded-xl p-4 w-full h-24 flex items-center justify-center">
                                                                                                             <!-- Replace this div with your Google AdSense code -->
-                                                                                                            <div class="text-center">
+
                                                                                                                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
                                                                                                                         crossorigin="anonymous"></script>
                                                                                                                 <!-- header -->
@@ -129,7 +129,7 @@
                                                                                                                 <script>
                                                                                                                     (adsbygoogle = window.adsbygoogle || []).push({});
                                                                                                                 </script>
-                                                                                                            </div>
+
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
@@ -152,7 +152,7 @@
                                                                                                 <!-- Mobile Ad Banner -->
                                                                                                 <div class="w-full flex justify-center mb-4 hidden sm:flex">
                                                                                                     <div class="ad-banner rounded-xl p-2 w-full max-w-xs h-16 flex items-center justify-center">
-                                                                                                        <div class="text-center">
+
                                                                                                             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
                                                                                                                     crossorigin="anonymous"></script>
                                                                                                             <!-- header -->
@@ -165,7 +165,7 @@
                                                                                                             <script>
                                                                                                                 (adsbygoogle = window.adsbygoogle || []).push({});
                                                                                                             </script>
-                                                                                                        </div>
+
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
