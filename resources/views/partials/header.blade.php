@@ -117,10 +117,16 @@
                                                                                                         <div class="ad-banner rounded-xl p-4 w-full h-24 flex items-center justify-center">
                                                                                                             <!-- Replace this div with your Google AdSense code -->
                                                                                                             <div class="text-center">
-                                                                                                                <div class="text-slate-400 text-sm font-semibold mb-1">Advertisement</div>
-                                                                                                                <div class="text-slate-500 text-xs urdu-text">اشتہار</div>
-                                                                                                                <div class="text-slate-400 text-xs mt-1">728 x 90 Banner</div>
-                                                                                                                <!-- Google AdSense code goes here -->
+                                                                                                                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                                                                                                                        crossorigin="anonymous"></script>
+                                                                                                                <!-- header -->
+                                                                                                                <ins class="adsbygoogle"
+                                                                                                                     style="display:inline-block;width:320px;height:50px"
+                                                                                                                     data-ad-client="ca-pub-1790652247481380"
+                                                                                                                     data-ad-slot="1871700663"></ins>
+                                                                                                                <script>
+                                                                                                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                                                                                                </script>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
