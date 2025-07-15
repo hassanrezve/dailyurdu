@@ -89,7 +89,7 @@
     </head>
     <body class="bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-screen">
         @include('partials.header')
-        
+
 
         <!-- Main Content -->
         <main class="container mx-auto px-4 mt-[72px]">
@@ -185,7 +185,8 @@ window.addEventListener('scroll', () => {
         }
     });
 </script>
-
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                crossorigin="anonymous"></script>
         @stack('scripts')
     </body>
 </html>

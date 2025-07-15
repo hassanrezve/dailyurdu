@@ -145,9 +145,16 @@
                                                                                                 <div class="w-full flex justify-center mb-4 hidden sm:flex">
                                                                                                     <div class="ad-banner rounded-xl p-2 w-full max-w-xs h-16 flex items-center justify-center">
                                                                                                         <div class="text-center">
-                                                                                                            <div class="text-slate-400 text-xs font-semibold mb-1">Advertisement</div>
-                                                                                                            <div class="text-slate-500 text-xs urdu-text">اشتہار</div>
-                                                                                                            <div class="text-slate-400 text-xs mt-1">320 x 50 Banner</div>
+                                                                                                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                                                                                                                    crossorigin="anonymous"></script>
+                                                                                                            <!-- header -->
+                                                                                                            <ins class="adsbygoogle"
+                                                                                                                 style="display:inline-block;width:320px;height:50px"
+                                                                                                                 data-ad-client="ca-pub-1790652247481380"
+                                                                                                                 data-ad-slot="1871700663"></ins>
+                                                                                                            <script>
+                                                                                                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                                                                                            </script>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
@@ -165,7 +172,7 @@
                                                                                         <!-- Desktop Nav -->
                                                                                         <nav id="mainNav" class="bg-white border-t border-slate-200 animated-border px-8 py-4">
                                                                                                 <div class="container mx-auto px-4">
-                                                                                                    
+
                                                                                                         <!-- Home --><ul class="flex flex-wrap justify-center gap-2 py-4 px-2">
                                                                                                         <li>
                                                                                                             <a href="{{ route('home') }}"
@@ -270,7 +277,7 @@
                                                                                     if (closeSearchModal && searchModal) {
                                                                                         closeSearchModal.addEventListener('click', function() {
                                                                                             searchModal.classList.add('hidden');
-                                                                                        }); 
+                                                                                        });
                                                                                     }
 
                                                                                     // Mobile More overlay logic
