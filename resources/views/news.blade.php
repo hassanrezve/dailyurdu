@@ -22,13 +22,18 @@
     <!-- Top Banner Ad Space -->
     <div class="mb-8">
         <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-            <div class="w-full h-[90px] bg-slate-100 rounded-xl flex items-center justify-center">
-                <div class="text-center">
-                    <div class="text-slate-400 text-sm font-semibold mb-1">Advertisement</div>
-                    <div class="text-slate-500 text-xs urdu-text">اشتہار</div>
-                    <div class="text-slate-400 text-xs mt-1">728 x 90 Banner</div>
-                </div>
-            </div>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                    crossorigin="anonymous"></script>
+            <!-- news header -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-1790652247481380"
+                 data-ad-slot="9501003159"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
     </div>
 
@@ -75,13 +80,16 @@
             <!-- In-Content Ad Space -->
             <div class="my-8">
                 <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-                    <div class="w-full h-[250px] bg-slate-100 rounded-xl flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="text-slate-400 text-sm font-semibold mb-1">Advertisement</div>
-                            <div class="text-slate-500 text-xs urdu-text">اشتہار</div>
-                            <div class="text-slate-400 text-xs mt-1">300 x 250 Banner</div>
-                        </div>
-                    </div>
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                            crossorigin="anonymous"></script>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-format="autorelaxed"
+                         data-ad-client="ca-pub-1790652247481380"
+                         data-ad-slot="4448089816"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
             </div>
 
@@ -93,13 +101,18 @@
             <!-- Bottom Ad Space -->
             <div class="mb-8">
                 <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-                    <div class="w-full h-[90px] bg-slate-100 rounded-xl flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="text-slate-400 text-sm font-semibold mb-1">Advertisement</div>
-                            <div class="text-slate-500 text-xs urdu-text">اشتہار</div>
-                            <div class="text-slate-400 text-xs mt-1">728 x 90 Banner</div>
-                        </div>
-                    </div>
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                            crossorigin="anonymous"></script>
+                    <!-- new footer -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-1790652247481380"
+                         data-ad-slot="1744785293"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                 </div>
             </div>
 
