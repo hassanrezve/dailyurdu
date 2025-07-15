@@ -114,7 +114,8 @@
 
                                                                                                     <!-- Google Ads Banner Space (Center) -->
                                                                                                     <div class="flex-1 mx-8">
-                                                                                                        <div class="ad-banner rounded-xl p-4 w-full h-24 flex items-center justify-center">
+{{--                                                                                                        <div class="ad-banner rounded-xl p-4 w-full h-24 flex items-center justify-center">--}}
+                                                                                                        <div class="rounded-xl p-4 w-full h-24 flex items-center justify-center">
                                                                                                             <!-- Replace this div with your Google AdSense code -->
 
                                                                                                                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
