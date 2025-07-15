@@ -31,10 +31,8 @@ jobs:
           key: ${{ secrets.SSH_DAILYURD_PRIVATE }}
           port: 21098
           script: |
-             # Navigate to Laravel project
             cd /home/dailyurd/dailyurdu
 
-            # Run Laravel cache commands
             php artisan config:clear
             php artisan route:clear
             php artisan view:clear
