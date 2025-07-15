@@ -6,11 +6,11 @@
     <main class="container mx-auto px-4 py-12 mt-[72px]">
         <div class="max-w-6xl mx-auto">
             <h1 class="text-4xl font-bold leading-[3] text-slate-800 mb-8 urdu-text gradient-text text-center">رابطہ</h1>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Contact Form -->
                 <div class="bg-gradient-to-r shadow-lg from-indigo-50 to-purple-50 rounded-xl p-8">
-                
+
                     <h2 class="text-2xl font-bold text-slate-800 mb-6 urdu-text">ہم سے رابطہ کریں</h2>
                     <form class="space-y-6">
                         <div>
@@ -49,8 +49,7 @@
                             </div>
                             <div>
                                 <p class="text-slate-600 urdu-text leading-relaxed">
-                                    پلاٹ نمبر 123، بلاک 6، پی ای سی ایچ ایس<br>
-                                    کراچی، پاکستان
+                                    Washington, D.C ,United States of America
                                 </p>
                             </div>
                         </div>
@@ -96,21 +95,11 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-slate-600 urdu-text">info@urdunews.com</p>
+                                    <p class="text-slate-600 urdu-text">dailyurduonline@gmail.com</p>
                                     <p class="text-slate-500 text-sm urdu-text">عام معلومات</p>
                                 </div>
                             </div>
-                            <div class="flex items-center space-x-4 space-x-reverse">
-                                <div class="bg-indigo-100 p-3 rounded-xl">
-                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-slate-600 urdu-text">support@urdunews.com</p>
-                                    <p class="text-slate-500 text-sm urdu-text">سپورٹ</p>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 

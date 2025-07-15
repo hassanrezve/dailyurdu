@@ -6,7 +6,7 @@
     <main class="container mx-auto px-4 py-12 mt-[72px]">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl leading-[3] font-bold text-slate-800 mb-8 urdu-text gradient-text text-center">رازداری کی پالیسی</h1>
-            
+
             <!-- Introduction -->
             <div class="bg-white rounded-3xl shadow-lg p-8 mb-8">
                 <h2 class="text-2xl font-bold text-slate-800 mb-4 urdu-text">تعارف</h2>
@@ -89,7 +89,7 @@
                     اگر آپ کے کوئی سوالات ہیں تو براہ کرم ہم سے رابطہ کریں:
                 </p>
                 <div class="mt-4 space-y-2">
-                    <p class="text-slate-600 urdu-text">ای میل: privacy@urdunews.com</p>
+                    <p class="text-slate-600 urdu-text">ای میل: dailyurduonline@gmail.com</p>
                     <p class="text-slate-600 urdu-text">فون: +92-21-1234567</p>
                 </div>
             </div>
