@@ -17,10 +17,10 @@ class NewsController extends Controller
     {
         // Load categories to avoid N+1 queries
         $post->load('categories');
-        
+
         // Increment the views count
         $post->increment('views');
-        
+
         return view('news', compact("post"));
     }
 
@@ -36,8 +36,8 @@ class NewsController extends Controller
         $posts = $category->posts()
             ->with('categories')
             ->latest()
-            ->paginate(10);
-            
+            ->paginate(16);
+
         return view('category', compact('category', 'posts'));
     }
 

@@ -7,7 +7,7 @@
     <!-- Top Banner Ad Space -->
     <div class="mb-8">
         <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-            <div class="w-full h-[90px] bg-slate-100 rounded-xl flex items-center justify-center">
+
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
                         crossorigin="anonymous"></script>
                 <!-- category top -->
@@ -20,7 +20,7 @@
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
-            </div>
+
         </div>
     </div>
 
@@ -70,7 +70,7 @@
             <!-- Bottom Ad Space -->
             <div class="mb-8">
                 <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-                    <div class="w-full h-[90px] bg-slate-100 rounded-xl flex items-center justify-center">
+
                         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
                                 crossorigin="anonymous"></script>
                         <!-- category bottom -->
@@ -83,7 +83,7 @@
                         <script>
                             (adsbygoogle = window.adsbygoogle || []).push({});
                         </script>
-                    </div>
+
                 </div>
             </div>
 
