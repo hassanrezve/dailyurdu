@@ -103,7 +103,10 @@
 
         <!-- Copyright -->
         <div class="border-t border-slate-700 mt-8 pt-6 text-center">
-            <p class="text-slate-400 text-sm urdu-text">© {{ date('Y') }} اردو نیوز - تمام حقوق محفوظ ہیں | Made with ❤️ in Pakistan</p>
+            <p class="text-slate-400 text-sm urdu-text">
+                © {{ date('Y') }} DailyUrdu - تمام حقوق محفوظ ہیں | Made with ❤️ by
+                <a href="https://syedhassanraza.com" class="text-blue-400 hover:underline" target="_blank">Syed Hassan Raza</a>
+            </p>
         </div>
     </div>
 </footer>
@@ -119,4 +122,4 @@ document.querySelectorAll('.footer-search-btn').forEach(function(btn) {
         }
     });
 });
-</script> 
+</script>
