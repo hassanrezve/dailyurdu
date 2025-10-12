@@ -23,39 +23,59 @@
     {{-- Put this in your Blade view where the ad should appear --}}
     <div class="mb-8">
         <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-            <div id="ad-container" class="relative min-h-[250px] md:min-h-[300px]">
+            <div id="ad-top" class="relative min-h-[250px] md:min-h-[300px]">
                 <ins class="adsbygoogle"
                      style="display:block; height:250px;"
                      data-ad-client="ca-pub-1790652247481380"
                      data-ad-slot="9501003159"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
-
-                <script>
-                    // Initialize the ad (the script in <head> must already be loaded)
-                    try {
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    } catch (e) {
-                        console.warn('AdSense init error:', e);
-                    }
-
-                    // Placeholder fallback if no ad loads
-                    setTimeout(() => {
-                        const adContainer = document.querySelector('#ad-container ins.adsbygoogle');
-                        const adFilled = adContainer && adContainer.innerHTML.trim().length > 0;
-
-                        if (!adFilled) {
-                            adContainer.innerHTML = `
-              <div class="flex items-center justify-center w-full h-full bg-slate-50 text-slate-400 text-sm border border-dashed border-slate-200 rounded-lg">
-                <span>No ad available — placeholder content</span>
-              </div>
-            `;
-                        }
-                    }, 3000);
-                </script>
             </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const wrapper = document.getElementById('ad-top');
+            const ins = wrapper.querySelector('ins.adsbygoogle');
+
+            function tryRender() {
+                const hasWidth = ins.offsetWidth > 0 && wrapper.offsetWidth > 0;
+                const alreadyDone = ins.getAttribute('data-adsbygoogle-status') === 'done';
+                if (!hasWidth || alreadyDone) return false;
+
+                try { (adsbygoogle = window.adsbygoogle || []).push({}); }
+                catch (e) { console.warn('AdSense push failed', e); }
+                return true;
+            }
+
+            // Attempt now; if width=0, wait for visibility/resize
+            if (!tryRender()) {
+                const ro = new ResizeObserver(() => { if (tryRender()) ro.disconnect(); });
+                ro.observe(wrapper);
+
+                const io = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) tryRender();
+                }, { threshold: 0.01 });
+                io.observe(wrapper);
+
+                // Last-chance timer (slow CSS/layouts)
+                setTimeout(tryRender, 1200);
+            }
+
+            // Optional: placeholder if nothing rendered after a while
+            setTimeout(() => {
+                const filled = ins.innerHTML.trim().length > 0 ||
+                    ins.getAttribute('data-adsbygoogle-status') === 'done';
+                if (!filled) {
+                    ins.innerHTML = `
+        <div class="flex items-center justify-center w-full h-full bg-slate-50 text-slate-400 text-sm border border-dashed border-slate-200 rounded-lg">
+          <span>Advertisement placeholder</span>
+        </div>`;
+                }
+            }, 3000);
+        })();
+    </script>
 
     <!-- News Content -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
