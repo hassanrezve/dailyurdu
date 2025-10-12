@@ -78,8 +78,7 @@
             <!-- In-Content Ad Space -->
             <div class="my-8">
                 <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
-                            crossorigin="anonymous"></script>
+
                     <ins class="adsbygoogle"
                          style="display:block"
                          data-ad-format="autorelaxed"
@@ -99,8 +98,7 @@
             <!-- Bottom Ad Space -->
             <div class="mb-8">
                 <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
-                            crossorigin="anonymous"></script>
+
                     <!-- new footer -->
                     <ins class="adsbygoogle"
                          style="display:block"
