@@ -22,18 +22,34 @@
     <!-- Top Banner Ad Space -->
     <div class="mb-8">
         <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-            <div class="min-h-[250px] md:min-h-[300px]" style="min-height: 250px;">
+            <div id="ad-container" class="relative min-h-[250px] md:min-h-[300px]" style="min-height: 250px;">
                 <script async
                         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
                         crossorigin="anonymous"></script>
+
                 <ins class="adsbygoogle"
                      style="display:block; height:250px;"
                      data-ad-client="ca-pub-1790652247481380"
                      data-ad-slot="9501003159"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
+
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
+
+                    // Wait 3 seconds, then check if ad loaded
+                    setTimeout(() => {
+                        const adContainer = document.querySelector('#ad-container ins.adsbygoogle');
+                        const adFilled = adContainer && adContainer.innerHTML.trim().length > 0;
+
+                        if (!adFilled) {
+                            adContainer.innerHTML = `
+              <div class="flex items-center justify-center w-full h-full bg-slate-50 text-slate-400 text-sm border border-dashed border-slate-200 rounded-lg">
+                <span>No ad available — placeholder content</span>
+              </div>
+            `;
+                        }
+                    }, 3000); // 3 seconds is usually enough
                 </script>
             </div>
         </div>
