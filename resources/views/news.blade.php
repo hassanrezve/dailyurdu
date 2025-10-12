@@ -20,13 +20,10 @@
 @section('content')
 <main class="container mx-auto px-4 mt-[72px]">
     <!-- Top Banner Ad Space -->
+    {{-- Put this in your Blade view where the ad should appear --}}
     <div class="mb-8">
         <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-            <div id="ad-container" class="relative min-h-[250px] md:min-h-[300px]" style="min-height: 250px;">
-                <script async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
-                        crossorigin="anonymous"></script>
-
+            <div id="ad-container" class="relative min-h-[250px] md:min-h-[300px]">
                 <ins class="adsbygoogle"
                      style="display:block; height:250px;"
                      data-ad-client="ca-pub-1790652247481380"
@@ -35,9 +32,14 @@
                      data-full-width-responsive="true"></ins>
 
                 <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    // Initialize the ad (the script in <head> must already be loaded)
+                    try {
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    } catch (e) {
+                        console.warn('AdSense init error:', e);
+                    }
 
-                    // Wait 3 seconds, then check if ad loaded
+                    // Placeholder fallback if no ad loads
                     setTimeout(() => {
                         const adContainer = document.querySelector('#ad-container ins.adsbygoogle');
                         const adFilled = adContainer && adContainer.innerHTML.trim().length > 0;
@@ -49,12 +51,11 @@
               </div>
             `;
                         }
-                    }, 3000); // 3 seconds is usually enough
+                    }, 3000);
                 </script>
             </div>
         </div>
     </div>
-
 
     <!-- News Content -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
