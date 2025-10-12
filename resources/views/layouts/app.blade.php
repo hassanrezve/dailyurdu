@@ -7,6 +7,8 @@
         <title>@yield('title', 'Daily Urdu – Daily Urdu News')</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                crossorigin="anonymous"></script>
         @yield("preload")
         <style>
             body {
@@ -185,8 +187,7 @@ window.addEventListener('scroll', () => {
         }
     });
 </script>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
-                crossorigin="anonymous"></script>
+
         @stack('scripts')
     </body>
 </html>
