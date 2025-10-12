@@ -1,6 +1,5 @@
 <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border border-slate-100">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
-            crossorigin="anonymous"></script>
+
     <!-- sidebar -->
     <ins class="adsbygoogle"
          style="display:block"
