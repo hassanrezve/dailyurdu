@@ -22,20 +22,23 @@
     <!-- Top Banner Ad Space -->
     <div class="mb-8">
         <div class="bg-white rounded-2xl shadow-lg p-4 border border-slate-100">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
-                    crossorigin="anonymous"></script>
-            <!-- news header -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-1790652247481380"
-                 data-ad-slot="9501003159"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+            <div class="min-h-[250px] md:min-h-[300px]" style="min-height: 250px;">
+                <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1790652247481380"
+                        crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block; height:250px;"
+                     data-ad-client="ca-pub-1790652247481380"
+                     data-ad-slot="9501003159"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </div>
     </div>
+
 
     <!-- News Content -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
