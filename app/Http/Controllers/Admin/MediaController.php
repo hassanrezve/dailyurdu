@@ -84,13 +84,32 @@ class MediaController extends Controller
 
     public function destroy(Media $media)
     {
-        $fullPath = $this->publicHtmlPath . '/' . $media->path;
-        if (file_exists($fullPath)) {
-            @unlink($fullPath);
+        $deletedFile = false;
+        $relative = ltrim($media->path, '/');
+        $candidates = [
+            $this->publicHtmlPath . '/' . $relative,
+            base_path('public/' . $relative),
+            function_exists('public_path') ? public_path($relative) : null,
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (!$candidate) continue;
+            if (is_file($candidate)) {
+                if (@unlink($candidate)) {
+                    $deletedFile = true;
+                    break;
+                }
+            }
         }
+
         $media->delete();
+
+        $message = $deletedFile
+            ? 'Media deleted successfully.'
+            : 'Media entry deleted. File not found or could not be removed (path mismatch/permissions).';
+
         return redirect()->route('admin.media.index')
-            ->with('success', 'Media deleted successfully.');
+            ->with('success', $message);
     }
 
     public function list(Request $request)
