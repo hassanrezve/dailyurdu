@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto px-3">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold">Media Library</h1>
         <a href="{{ route('admin.posts.create') }}" class="text-sm text-blue-600 hover:underline">Back to New Post</a>

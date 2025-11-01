@@ -401,23 +401,102 @@
         modal.id = 'editor-media-modal';
         modal.className = 'fixed inset-0 bg-black/50 z-50 hidden';
         modal.innerHTML = `
-          <div class="min-h-screen flex items-end sm:items-center justify-center p-0 sm:p-4">
-            <div class="bg-white rounded-t sm:rounded shadow-lg w-full sm:max-w-5xl">
-              <div class="p-3 sm:p-4 border-b flex items-center gap-2">
+          <div class="min-h-screen flex items-center justify-center p-2 sm:p-4">
+            <div class="bg-white rounded shadow-lg w-full max-w-lg sm:max-w-5xl">
+              <div class="p-3 sm:p-4 border-b flex items-center gap-2 sticky top-0 bg-white z-10">
                 <h3 class="font-semibold flex-1">Insert Image</h3>
                 <input id="editor-media-search-input" type="text" placeholder="Search by name..." class="w-40 sm:w-60 rounded-md border-gray-300 shadow-sm px-2 py-1" />
                 <button id="editor-media-modal-close" class="text-gray-600 px-2 py-1">Close</button>
               </div>
+              <div id="editor-media-upload" class="p-2 sm:p-3 border-b bg-white">
+                <form id="editor-media-upload-form" class="grid grid-cols-1 sm:grid-cols-5 gap-2 items-end">
+                  <div>
+                    <label class="block text-gray-700 text-sm">File</label>
+                    <input id="editor-media-upload-file" type="file" accept="image/*" class="block w-full" required />
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 text-sm">Name</label>
+                    <input id="editor-media-upload-name" type="text" placeholder="e.g. in-article-photo" class="block w-full rounded-md border-gray-300 shadow-sm" required />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label class="block text-gray-700 text-sm">Alt (optional)</label>
+                    <input id="editor-media-upload-alt" type="text" class="block w-full rounded-md border-gray-300 shadow-sm" />
+                  </div>
+                  <div>
+                    <button id="editor-media-upload-button" type="submit" class="w-full px-3 py-2 bg-blue-600 text-white rounded">Upload</button>
+                  </div>
+                </form>
+              </div>
               <div id="editor-media-modal-grid" class="p-3 sm:p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 max-h-[70vh] overflow-auto"></div>
-              <div class="p-3 border-t text-right">
-                <div class="flex items-center justify-between">
-                  <button id="editor-media-modal-load" class="px-3 py-2 bg-gray-100 rounded">Load more</button>
+              <div class="p-3 border-t">
+                <div class="flex items-center justify-between gap-2">
+                  <button id="editor-media-modal-load" class="flex-1 px-3 py-2 bg-gray-100 rounded">Load more</button>
                   <button id="editor-media-modal-cancel" class="px-3 py-2 bg-gray-200 rounded">Close</button>
                 </div>
               </div>
             </div>
           </div>`;
         document.body.appendChild(modal);
+        // Wire upload form inside editor modal
+        (function(){
+            const API_UPLOAD = "{{ route('admin.media.store') }}";
+            const API_LIST = "{{ route('admin.media.list') }}";
+            const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const grid = modal.querySelector('#editor-media-modal-grid');
+            const form = modal.querySelector('#editor-media-upload-form');
+            if(!form) return;
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const file = modal.querySelector('#editor-media-upload-file').files[0];
+                const name = modal.querySelector('#editor-media-upload-name').value.trim();
+                const alt = modal.querySelector('#editor-media-upload-alt').value.trim();
+                if (!file || !name) return;
+                const fd = new FormData();
+                fd.append('file', file);
+                fd.append('name', name);
+                fd.append('alt', alt);
+                fd.append('_token', csrf);
+                try {
+                    const res = await fetch(API_UPLOAD, { method: 'POST', headers: { 'X-Requested-With':'XMLHttpRequest' }, body: fd });
+                    if (!res.ok) throw new Error('Upload failed');
+                    const json = await res.json();
+                    const item = json.data;
+                    // Insert directly into editor
+                    try {
+                        const editor = window.postEditor;
+                        if (editor) {
+                            const viewFrag = editor.data.processor.toView(`<img src="${item.url}" alt="${item.alt || item.title || item.filename}">`);
+                            const modelFrag = editor.data.toModel(viewFrag);
+                            editor.model.insertContent(modelFrag, editor.model.document.selection);
+                        }
+                    } catch(e) {}
+                    // Refresh grid list
+                    const res2 = await fetch(`${API_LIST}?page=1`, { headers: { 'X-Requested-With':'XMLHttpRequest' } });
+                    const json2 = await res2.json();
+                    grid.innerHTML = '';
+                    json2.data.forEach(m => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'border rounded overflow-hidden group';
+                        btn.innerHTML = `<img src="${m.url}" class="w-full aspect-square object-cover group-hover:opacity-80" /><div class=\\"p-1 text-[10px] sm:text-xs truncate\\">${m.filename}</div>`;
+                        btn.addEventListener('click', () => {
+                            try {
+                                const editor = window.postEditor;
+                                if (editor) {
+                                    const viewFrag = editor.data.processor.toView(`<img src=\\\"${m.url}\\\" alt=\\\"${m.alt || m.title || m.filename}\\\">`);
+                                    const modelFrag = editor.data.toModel(viewFrag);
+                                    editor.model.insertContent(modelFrag, editor.model.document.selection);
+                                }
+                            } catch(e) {}
+                            modal.classList.add('hidden');
+                        });
+                        grid.appendChild(btn);
+                    });
+                } catch(err) {
+                    alert('Upload failed. Please check file and name.');
+                }
+            });
+        })();
 
         const open = () => modal.classList.remove('hidden');
         const close = () => modal.classList.add('hidden');

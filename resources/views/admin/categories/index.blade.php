@@ -41,7 +41,7 @@
 </div>
 
 <!-- Mobile card list -->
-<div class="sm:hidden space-y-3">
+<div class="sm:hidden space-y-3 mx-auto px-3">
     @forelse($categories as $category)
         <div class="bg-white rounded border shadow p-3">
             <div class="text-base font-semibold truncate">{{ $category->name }}</div>

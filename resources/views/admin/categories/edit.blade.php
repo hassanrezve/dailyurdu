@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="max-w-xl mx-auto">
+<div class="max-w-xl mx-auto px-3">
     <h1 class="text-2xl font-semibold mb-6">Edit Category</h1>
     <form action="{{ route('admin.categories.update', $category) }}" method="POST">
         @csrf
