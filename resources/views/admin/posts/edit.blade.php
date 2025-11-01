@@ -105,6 +105,24 @@
         modal.innerHTML = `
             <div class=\"min-h-screen flex items-end sm:items-center justify-center p-0 sm:p-4\">\n            <div class=\"bg-white rounded-t sm:rounded shadow-lg w-full sm:max-w-5xl\">\n              <div class=\"p-3 sm:p-4 border-b flex items-center gap-2\">\n                <h3 class=\"font-semibold flex-1\">Select Media</h3>\n                <input id=\"media-search-input\" type=\"text\" placeholder=\"Search by name...\" class=\"w-40 sm:w-60 rounded-md border-gray-300 shadow-sm px-2 py-1\" />\n                <button id=\"media-modal-close\" class=\"text-gray-600 px-2 py-1\">Close</button>\n              </div>\n              <div id=\"media-modal-grid\" class=\"p-3 sm:p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 max-h-[70vh] overflow-auto\">\n                ${@json($mediaItems).map(m => \`\n                  <button type=\"button\" class=\"border rounded overflow-hidden group\" data-id=\"${m.id}\" data-src=\"${` + "{{ asset('') }}" + `+m.path}\" data-name=\"${(m.filename||'').toLowerCase()}\">\n                    <img src=\"${` + "{{ asset('') }}" + `+m.path}\" class=\"w-full aspect-square object-cover group-hover:opacity-80\" />\n                    <div class=\"p-1 text-[10px] sm:text-xs truncate\">${m.filename}</div>\n                  </button>\n                \`).join('')}\n              </div>\n              <div class=\"p-3 border-t text-right\">\n                <button id=\"media-modal-cancel\" class=\"px-3 py-2 bg-gray-200 rounded\">Close</button>\n              </div>\n            </div>\n          </div>`;
         document.body.appendChild(modal);
+        // Rebuild modal markup cleanly to avoid escaped HTML issues
+        modal.innerHTML = `
+          <div class="min-h-screen flex items-center justify-center p-2 sm:p-4">
+            <div class="bg-white rounded shadow-lg w-full max-w-lg sm:max-w-5xl">
+              <div class="p-3 sm:p-4 border-b flex items-center gap-2 sticky top-0 bg-white z-10">
+                <h3 class="font-semibold flex-1">Select Media</h3>
+                <input id="media-search-input" type="text" placeholder="Search by name..." class="w-40 sm:w-60 rounded-md border-gray-300 shadow-sm px-2 py-1" />
+                <button id="media-modal-close" class="text-gray-600 px-2 py-1">Close</button>
+              </div>
+              <div id="media-modal-grid" class="p-3 sm:p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 max-h-[70vh] overflow-auto"></div>
+              <div class="p-3 border-t">
+                <div class="flex items-center justify-between gap-2">
+                  <button id="media-modal-load" class="flex-1 px-3 py-2 bg-gray-100 rounded">Load more</button>
+                  <button id="media-modal-cancel" class="px-3 py-2 bg-gray-200 rounded">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
         // Tweak editor modal classes for mobile
         try {
             const frame = modal.querySelector('.min-h-screen');
