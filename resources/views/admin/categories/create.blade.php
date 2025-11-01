@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="max-w-xl mx-auto">
+<div class="max-w-xl mx-auto px-3">
     <h1 class="text-2xl font-semibold mb-6">Create Category</h1>
     <form action="{{ route('admin.categories.store') }}" method="POST">
         @csrf
@@ -19,8 +19,10 @@
                 <span class="text-red-600 text-sm">{{ $message }}</span>
             @enderror
         </div>
-        <div class="flex justify-end">
-            <a href="{{ route('admin.categories.index') }}" class="mr-4 text-gray-600 hover:text-gray-900">Cancel</a>
+        <div class="flex flex-col sm:flex-row sm:justify-end gap-3">
+            <a href="{{ route('admin.categories.index') }}" class="sm:mr-4 text-center text-gray-600 hover:text-gray-900">Cancel</a>
             <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Create</button>
         </div>
- 
+    </form>
+</div>
+@endsection

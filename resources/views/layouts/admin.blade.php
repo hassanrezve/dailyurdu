@@ -17,7 +17,7 @@
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
         <!-- Navigation -->
-        <nav class="bg-white border-b border-gray-100">
+        <nav class="bg-white border-b border-gray-100 sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex">
@@ -45,18 +45,40 @@
                         </div>
                     </div>
 
-                    <!-- Settings Dropdown -->
-                    <div class="hidden sm:flex sm:items-center sm:ml-6">
-                        <div class="relative">
-                            <div class="flex items-center space-x-4">
-                                <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">
-                                        Logout
-                                    </button>
-                                </form>
-                            </div>
+                    <!-- Right side: user + mobile menu toggle -->
+                    <div class="flex items-center gap-3 sm:gap-6">
+                        <div class="hidden sm:flex sm:items-center">
+                            <span class="text-sm text-gray-700 mr-3">{{ Auth::user()->name }}</span>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">Logout</button>
+                            </form>
+                        </div>
+                        <button id="mobile-menu-toggle" class="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                            <svg id="icon-open" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg id="icon-close" class="h-6 w-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="sm:hidden hidden border-t border-gray-200">
+                <div class="px-4 py-3 space-y-1 bg-white">
+                    <a href="{{ route('admin.dashboard') }}" class="block px-2 py-2 rounded text-gray-700 hover:bg-gray-100">Dashboard</a>
+                    <a href="{{ route('admin.posts.index') }}" class="block px-2 py-2 rounded text-gray-700 hover:bg-gray-100">Posts</a>
+                    <a href="{{ route('admin.categories.index') }}" class="block px-2 py-2 rounded text-gray-700 hover:bg-gray-100">Categories</a>
+                    <a href="{{ route('admin.media.index') }}" class="block px-2 py-2 rounded text-gray-700 hover:bg-gray-100">Media</a>
+                    <div class="border-t pt-3 mt-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">Logout</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -82,6 +104,22 @@
             </div>
         </main>
     </div>
+    <script>
+        (function(){
+            const toggle = document.getElementById('mobile-menu-toggle');
+            const menu = document.getElementById('mobile-menu');
+            const openIcon = document.getElementById('icon-open');
+            const closeIcon = document.getElementById('icon-close');
+            if (!toggle || !menu) return;
+            toggle.addEventListener('click', () => {
+                const hidden = menu.classList.toggle('hidden');
+                const expanded = !hidden;
+                toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                openIcon.classList.toggle('hidden', expanded);
+                closeIcon.classList.toggle('hidden', !expanded);
+            });
+        })();
+    </script>
     @stack('scripts')
 </body>
 </html>

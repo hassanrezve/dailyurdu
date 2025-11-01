@@ -65,6 +65,19 @@ class MediaController extends Controller
         $media->size = $size;
         $media->save();
 
+        if ($request->ajax() || $request->expectsJson()) {
+            return response()->json([
+                'data' => [
+                    'id' => $media->id,
+                    'filename' => $media->filename,
+                    'title' => $media->title,
+                    'alt' => $media->alt,
+                    'url' => asset($media->path),
+                    'path' => $media->path,
+                ]
+            ], 201);
+        }
+
         return redirect()->route('admin.media.index')
             ->with('success', 'Media uploaded successfully.');
     }

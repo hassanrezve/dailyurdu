@@ -6,7 +6,8 @@
     <a href="{{ route('admin.categories.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">Create Category</a>
 </div>
 
-<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+<!-- Desktop/tablet table -->
+<div class="hidden sm:block bg-white shadow overflow-x-auto sm:rounded-lg">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>
@@ -36,6 +37,29 @@
             @endforelse
         </tbody>
     </table>
+    </table>
+</div>
+
+<!-- Mobile card list -->
+<div class="sm:hidden space-y-3">
+    @forelse($categories as $category)
+        <div class="bg-white rounded border shadow p-3">
+            <div class="text-base font-semibold truncate">{{ $category->name }}</div>
+            @if($category->description)
+                <div class="mt-1 text-sm text-gray-600 line-clamp-2">{{ $category->description }}</div>
+            @endif
+            <div class="mt-2 flex items-center justify-end gap-3">
+                <a href="{{ route('admin.categories.edit', $category) }}" class="text-blue-600 text-sm">Edit</a>
+                <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-red-600 text-sm">Delete</button>
+                </form>
+            </div>
+        </div>
+    @empty
+        <p class="text-gray-500">No categories found.</p>
+    @endforelse
 </div>
 
 <div class="mt-4">
