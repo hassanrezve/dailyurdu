@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class MediaController extends Controller
 {
@@ -84,32 +85,29 @@ class MediaController extends Controller
 
     public function destroy(Media $media)
     {
-        $deletedFile = false;
-        $relative = ltrim($media->path, '/');
-        $candidates = [
-            $this->publicHtmlPath . '/' . $relative,
-            base_path('public/' . $relative),
-            function_exists('public_path') ? public_path($relative) : null,
-        ];
+        try {
+            $relative = ltrim($media->path, '/');
+            $fullPath = rtrim($this->publicHtmlPath, '/') . '/' . $relative;
 
-        foreach ($candidates as $candidate) {
-            if (!$candidate) continue;
-            if (is_file($candidate)) {
-                if (@unlink($candidate)) {
-                    $deletedFile = true;
-                    break;
-                }
+            $deletedFile = false;
+            if (is_file($fullPath)) {
+                @chmod($fullPath, 0644);
+                $deletedFile = @unlink($fullPath);
             }
+
+            $media->delete();
+
+            return redirect()->route('admin.media.index')
+                ->with('success', $deletedFile ? 'Media deleted successfully.' : 'Media entry deleted. File not found or not removable (permissions).');
+        } catch (\Throwable $e) {
+            Log::error('Media delete failed', [
+                'media_id' => $media->id,
+                'path' => $media->path,
+                'error' => $e->getMessage(),
+            ]);
+            return redirect()->route('admin.media.index')
+                ->with('error', 'Could not delete media. Please check server file permissions and path.');
         }
-
-        $media->delete();
-
-        $message = $deletedFile
-            ? 'Media deleted successfully.'
-            : 'Media entry deleted. File not found or could not be removed (path mismatch/permissions).';
-
-        return redirect()->route('admin.media.index')
-            ->with('success', $message);
     }
 
     public function list(Request $request)
