@@ -8,6 +8,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Posts
     Route::resource('posts', PostController::class);
+
+    // Media Library
+    Route::resource('media', MediaController::class)->only(['index', 'store', 'destroy']);
+    Route::get('media/list', [MediaController::class, 'list'])->name('media.list');
 });
 
 

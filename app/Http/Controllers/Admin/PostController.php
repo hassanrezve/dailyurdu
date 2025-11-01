@@ -23,7 +23,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::where('id', '!=', 1)->orderBy('name')->get();
-        return view('admin.posts.create', compact('categories'));
+        $mediaItems = \App\Models\Media::orderBy('created_at', 'desc')->take(24)->get();
+        return view('admin.posts.create', compact('categories', 'mediaItems'));
     }
 
     public function store(Request $request)
@@ -31,7 +32,7 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'media_id' => 'nullable|exists:media,id',
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id|not_in:1',
             'status' => 'required|in:draft,published',
@@ -53,18 +54,10 @@ class PostController extends Controller
         ];
 
 
-        if ($request->hasFile('image_url')) {
-            $destinationPath = $this->publicHtmlPath . '/uploads/posts';
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            $image = $request->file('image_url');
-            $nameWithoutExt = time() . '_' . pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-            $webpRelativePath = $this->convertToWebP($image, $destinationPath, $nameWithoutExt);
-
-            if ($webpRelativePath) {
-                $data['image_url'] = $webpRelativePath;
+        if ($request->filled('media_id')) {
+            $media = \App\Models\Media::find($request->input('media_id'));
+            if ($media) {
+                $data['image_url'] = $media->path; // store relative path for compatibility
             }
         }
 
@@ -83,7 +76,8 @@ class PostController extends Controller
     {
         $categories = Category::where('id', '!=', 1)->orderBy('name')->get();
         $selectedCategories = $post->categories->where('id', '!=', 1)->pluck('id')->toArray();
-        return view('admin.posts.edit', compact('post', 'categories', 'selectedCategories'));
+        $mediaItems = \App\Models\Media::orderBy('created_at', 'desc')->take(24)->get();
+        return view('admin.posts.edit', compact('post', 'categories', 'selectedCategories', 'mediaItems'));
     }
 
     public function update(Request $request, Post $post)
@@ -91,7 +85,7 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'media_id' => 'nullable|exists:media,id',
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id|not_in:1',
             'status' => 'required|in:draft,published',
@@ -111,25 +105,10 @@ class PostController extends Controller
             'featured' => $request->has('featured'),
         ];
 
-        if ($request->hasFile('image_url')) {
-            if ($post->image_url && str_starts_with($post->image_url, 'uploads/posts/')) {
-                $oldPath = $this->publicHtmlPath . '/' . $post->image_url;
-                if (file_exists($oldPath)) {
-                    unlink($oldPath);
-                }
-            }
-
-            $destinationPath = $this->publicHtmlPath . '/uploads/posts';
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
-
-            $image = $request->file('image_url');
-            $nameWithoutExt = time() . '_' . pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-            $webpRelativePath = $this->convertToWebP($image, $destinationPath, $nameWithoutExt);
-
-            if ($webpRelativePath) {
-                $data['image_url'] = $webpRelativePath;
+        if ($request->filled('media_id')) {
+            $media = \App\Models\Media::find($request->input('media_id'));
+            if ($media) {
+                $data['image_url'] = $media->path;
             }
         }
 
@@ -170,32 +149,5 @@ class PostController extends Controller
         $query->update(['featured' => false]);
     }
 
-    private function convertToWebP($image, $destinationPath, $nameWithoutExt): ?string
-    {
-        $extension = strtolower($image->getClientOriginalExtension());
-        $webpPath = $destinationPath . '/' . $nameWithoutExt . '.webp';
-
-        switch ($extension) {
-            case 'jpeg':
-            case 'jpg':
-                $img = imagecreatefromjpeg($image->getRealPath());
-                break;
-            case 'png':
-                $img = imagecreatefrompng($image->getRealPath());
-                imagepalettetotruecolor($img);
-                imagealphablending($img, true);
-                imagesavealpha($img, true);
-                break;
-            case 'gif':
-                $img = imagecreatefromgif($image->getRealPath());
-                break;
-            default:
-                return null;
-        }
-
-        imagewebp($img, $webpPath, 80);
-        imagedestroy($img);
-
-        return 'uploads/posts/' . $nameWithoutExt . '.webp';
-    }
+    // Note: image upload and conversion moved to Media Library
 }
