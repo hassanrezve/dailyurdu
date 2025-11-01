@@ -484,6 +484,7 @@
   if (!trigger) return;
 
   const API = "{{ route('admin.media.list') }}";
+  const API_UPLOAD = "{{ route('admin.media.store') }}";
   const modal = document.createElement('div');
   modal.id = 'feature-media-modal';
   modal.className = 'fixed inset-0 bg-black/50 z-50 hidden';
@@ -494,6 +495,25 @@
           <h3 class="font-semibold flex-1">Select Media</h3>
           <input id="fmedia-search" type="text" placeholder="Search by name..." class="w-40 sm:w-60 rounded-md border-gray-300 shadow-sm px-2 py-1" />
           <button id="fmedia-close" class="text-gray-600 px-2 py-1">Close</button>
+        </div>
+        <div id="fmedia-upload" class="p-2 sm:p-3 border-b bg-white">
+          <form id="fmedia-upload-form" class="grid grid-cols-1 sm:grid-cols-5 gap-2 items-end">
+            <div>
+              <label class="block text-gray-700 text-sm">File</label>
+              <input id="fmedia-upload-file" type="file" accept="image/*" class="block w-full" required />
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm">Name</label>
+              <input id="fmedia-upload-name" type="text" placeholder="e.g. featured-image" class="block w-full rounded-md border-gray-300 shadow-sm" required />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-gray-700 text-sm">Alt (optional)</label>
+              <input id="fmedia-upload-alt" type="text" class="block w-full rounded-md border-gray-300 shadow-sm" />
+            </div>
+            <div>
+              <button id="fmedia-upload-button" type="submit" class="w-full px-3 py-2 bg-blue-600 text-white rounded">Upload</button>
+            </div>
+          </form>
         </div>
         <div id="fmedia-grid" class="p-3 sm:p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 max-h-[70vh] overflow-auto"></div>
         <div class="p-3 border-t">
@@ -512,6 +532,7 @@
   const grid = modal.querySelector('#fmedia-grid');
   const search = modal.querySelector('#fmedia-search');
   const loadBtn = modal.querySelector('#fmedia-load');
+  const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   async function fetchMedia(append=false){
     if (state.loading) return; state.loading = true;
@@ -540,6 +561,36 @@
       grid.appendChild(btn);
     });
     loadBtn.disabled = state.page >= state.last;
+  }
+
+  // Upload inside feature modal
+  const uploadForm = modal.querySelector('#fmedia-upload-form');
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = modal.querySelector('#fmedia-upload-file').files[0];
+      const name = modal.querySelector('#fmedia-upload-name').value.trim();
+      const alt = modal.querySelector('#fmedia-upload-alt').value.trim();
+      if (!file || !name) return;
+      const fd = new FormData();
+      fd.append('file', file); fd.append('name', name); fd.append('alt', alt); fd.append('_token', csrf);
+      try {
+        const res = await fetch(API_UPLOAD, { method: 'POST', headers: { 'X-Requested-With':'XMLHttpRequest' }, body: fd });
+        if (!res.ok) throw new Error('Upload failed');
+        const json = await res.json();
+        const item = json.data;
+        // auto-select uploaded as featured
+        document.getElementById('media_id').value = item.id;
+        const wrap = document.getElementById('selected-media-preview');
+        const img = document.getElementById('selected-media-img');
+        img.src = item.url; wrap.classList.remove('hidden');
+        // refresh grid first page
+        state = { q:'', page:1, last:1, loading:false };
+        fetchMedia(false);
+      } catch(err) {
+        alert('Upload failed. Please check file and name.');
+      }
+    });
   }
 
   // Override any prior handlers to ensure this modal opens
