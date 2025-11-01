@@ -478,6 +478,90 @@
 @endpush
 @push('scripts')
 <script>
+// Fallback: reliable feature-image modal (mobile-friendly) overriding previous bindings
+(function(){
+  const trigger = document.getElementById('open-media-picker');
+  if (!trigger) return;
+
+  const API = "{{ route('admin.media.list') }}";
+  const modal = document.createElement('div');
+  modal.id = 'feature-media-modal';
+  modal.className = 'fixed inset-0 bg-black/50 z-50 hidden';
+  modal.innerHTML = `
+    <div class="min-h-screen flex items-center justify-center p-2 sm:p-4">
+      <div class="bg-white rounded shadow-lg w-full max-w-lg sm:max-w-5xl">
+        <div class="p-3 sm:p-4 border-b flex items-center gap-2 sticky top-0 bg-white z-10">
+          <h3 class="font-semibold flex-1">Select Media</h3>
+          <input id="fmedia-search" type="text" placeholder="Search by name..." class="w-40 sm:w-60 rounded-md border-gray-300 shadow-sm px-2 py-1" />
+          <button id="fmedia-close" class="text-gray-600 px-2 py-1">Close</button>
+        </div>
+        <div id="fmedia-grid" class="p-3 sm:p-4 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 sm:gap-3 max-h-[70vh] overflow-auto"></div>
+        <div class="p-3 border-t">
+          <div class="flex items-center justify-between gap-2">
+            <button id="fmedia-load" class="flex-1 px-3 py-2 bg-gray-100 rounded">Load more</button>
+            <button id="fmedia-cancel" class="px-3 py-2 bg-gray-200 rounded">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  let state = { q: '', page: 1, last: 1, loading: false };
+  const open = () => modal.classList.remove('hidden');
+  const close = () => modal.classList.add('hidden');
+  const grid = modal.querySelector('#fmedia-grid');
+  const search = modal.querySelector('#fmedia-search');
+  const loadBtn = modal.querySelector('#fmedia-load');
+
+  async function fetchMedia(append=false){
+    if (state.loading) return; state.loading = true;
+    const res = await fetch(`${API}?q=${encodeURIComponent(state.q)}&page=${state.page}`, { headers: { 'X-Requested-With':'XMLHttpRequest' } });
+    const json = await res.json();
+    state.last = json.meta.last_page;
+    render(json.data, append);
+    state.loading = false;
+  }
+
+  function render(items, append=false){
+    if (!append) grid.innerHTML='';
+    items.forEach(m => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'border rounded overflow-hidden group';
+      btn.setAttribute('data-id', m.id);
+      btn.setAttribute('data-src', m.url);
+      btn.innerHTML = `<img src="${m.url}" class="w-full aspect-square object-cover group-hover:opacity-80" /><div class=\"p-1 text-[10px] sm:text-xs truncate\">${m.filename}</div>`;
+      btn.addEventListener('click', () => {
+        document.getElementById('media_id').value = m.id;
+        const wrap = document.getElementById('selected-media-preview');
+        const img = document.getElementById('selected-media-img');
+        img.src = m.url; wrap.classList.remove('hidden'); close();
+      });
+      grid.appendChild(btn);
+    });
+    loadBtn.disabled = state.page >= state.last;
+  }
+
+  // Override any prior handlers to ensure this modal opens
+  trigger.addEventListener('click', (e) => {
+    e.preventDefault(); e.stopImmediatePropagation();
+    state = { q:'', page:1, last:1, loading:false };
+    if (search) search.value='';
+    fetchMedia(false);
+    open();
+  }, true);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target.id==='feature-media-modal' || e.target.id==='fmedia-close' || e.target.id==='fmedia-cancel') close();
+  });
+
+  let t; if (search) search.addEventListener('input', () => { clearTimeout(t); t=setTimeout(()=>{ state.q=search.value.trim(); state.page=1; fetchMedia(false); }, 250); });
+  if (loadBtn) loadBtn.addEventListener('click', (e)=>{ e.preventDefault(); if (state.page < state.last){ state.page+=1; fetchMedia(true); } });
+})();
+</script>
+@endpush
+@push('scripts')
+<script>
 // Ensure upload UI exists inside editor media modal (Edit page)
 (function(){
     const trigger = document.getElementById('open-editor-media-picker');
