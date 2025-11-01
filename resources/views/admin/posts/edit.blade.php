@@ -458,3 +458,101 @@
     })();
 </script>
 @endpush
+@push('scripts')
+<script>
+// Ensure upload UI exists inside editor media modal (Edit page)
+(function(){
+    const trigger = document.getElementById('open-editor-media-picker');
+    if (!trigger) return;
+    const API_UPLOAD = "{{ route('admin.media.store') }}";
+    const API_LIST = "{{ route('admin.media.list') }}";
+    const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    function injectUpload() {
+        const modal = document.getElementById('editor-media-modal');
+        if (!modal) return false;
+        const grid = modal.querySelector('#editor-media-modal-grid');
+        if (!grid) return false;
+        if (modal.querySelector('#editor-media-upload-form')) return true; // already present
+        const wrap = document.createElement('div');
+        wrap.className = 'p-2 sm:p-3 border-b bg-white';
+        wrap.innerHTML = `
+          <form id="editor-media-upload-form" class="grid grid-cols-1 sm:grid-cols-5 gap-2 items-end">
+            <div>
+              <label class="block text-gray-700 text-sm">File</label>
+              <input id="editor-media-upload-file" type="file" accept="image/*" class="block w-full" required />
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm">Name</label>
+              <input id="editor-media-upload-name" type="text" placeholder="e.g. in-article-photo" class="block w-full rounded-md border-gray-300 shadow-sm" required />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-gray-700 text-sm">Alt (optional)</label>
+              <input id="editor-media-upload-alt" type="text" class="block w-full rounded-md border-gray-300 shadow-sm" />
+            </div>
+            <div>
+              <button id="editor-media-upload-button" type="submit" class="w-full px-3 py-2 bg-blue-600 text-white rounded">Upload</button>
+            </div>
+          </form>`;
+        grid.parentNode.insertBefore(wrap, grid);
+
+        const form = modal.querySelector('#editor-media-upload-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = modal.querySelector('#editor-media-upload-file').files[0];
+            const name = modal.querySelector('#editor-media-upload-name').value.trim();
+            const alt = modal.querySelector('#editor-media-upload-alt').value.trim();
+            if (!file || !name) return;
+            const fd = new FormData();
+            fd.append('file', file);
+            fd.append('name', name);
+            fd.append('alt', alt);
+            fd.append('_token', csrf);
+            try {
+                const res = await fetch(API_UPLOAD, { method: 'POST', headers: { 'X-Requested-With':'XMLHttpRequest' }, body: fd });
+                if (!res.ok) throw new Error('Upload failed');
+                const json = await res.json();
+                const item = json.data;
+                // insert into editor
+                try {
+                    const editor = window.postEditor;
+                    if (editor) {
+                        const viewFrag = editor.data.processor.toView(`<img src="${item.url}" alt="${item.alt || item.title || item.filename}">`);
+                        const modelFrag = editor.data.toModel(viewFrag);
+                        editor.model.insertContent(modelFrag, editor.model.document.selection);
+                    }
+                } catch(e) {}
+                // refresh grid
+                const res2 = await fetch(`${API_LIST}?page=1`, { headers: { 'X-Requested-With':'XMLHttpRequest' } });
+                const json2 = await res2.json();
+                grid.innerHTML = '';
+                json2.data.forEach(m => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'border rounded overflow-hidden group';
+                    btn.innerHTML = `<img src="${m.url}" class="w-full aspect-square object-cover group-hover:opacity-80" /><div class=\"p-1 text-[10px] sm:text-xs truncate\">${m.filename}</div>`;
+                    btn.addEventListener('click', () => {
+                        try {
+                            const editor = window.postEditor;
+                            if (editor) {
+                                const viewFrag = editor.data.processor.toView(`<img src=\\"${m.url}\\" alt=\\"${m.alt || m.title || m.filename}\\">`);
+                                const modelFrag = editor.data.toModel(viewFrag);
+                                editor.model.insertContent(modelFrag, editor.model.document.selection);
+                            }
+                        } catch(e) {}
+                        modal.classList.add('hidden');
+                    });
+                    grid.appendChild(btn);
+                });
+            } catch(err) {
+                alert('Upload failed. Please check file and name.');
+            }
+        });
+        return true;
+    }
+    trigger.addEventListener('click', () => {
+        setTimeout(() => { injectUpload(); }, 0);
+    });
+})();
+</script>
+@endpush
