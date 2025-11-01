@@ -372,7 +372,7 @@
                     const btn = document.createElement('button');
                     btn.type = 'button';
                     btn.className = 'border rounded overflow-hidden group';
-                    btn.innerHTML = `<img src="${m.url}" class="w-full aspect-square object-cover group-hover:opacity-80" /><div class=\"p-1 text-[10px] sm:text-xs truncate\">${m.filename}</div>`;
+                    btn.innerHTML = `<img src="${m.url}" class="w-full h-28 object-cover group-hover:opacity-80" /><div class=\"p-1 text-[10px] sm:text-xs truncate\">${m.filename}</div>`;
                     btn.addEventListener('click', () => {
                         try {
                             const editor = window.postEditor;

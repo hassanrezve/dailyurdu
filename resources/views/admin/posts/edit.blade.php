@@ -551,7 +551,7 @@
       btn.className = 'border rounded overflow-hidden group';
       btn.setAttribute('data-id', m.id);
       btn.setAttribute('data-src', m.url);
-      btn.innerHTML = `<img src="${m.url}" class="w-full aspect-square object-cover group-hover:opacity-80" /><div class=\"p-1 text-[10px] sm:text-xs truncate\">${m.filename}</div>`;
+      btn.innerHTML = `<img src="${m.url}" class="w-full h-28 object-cover group-hover:opacity-80" /><div class=\"p-1 text-[10px] sm:text-xs truncate\">${m.filename}</div>`;
       btn.addEventListener('click', () => {
         document.getElementById('media_id').value = m.id;
         const wrap = document.getElementById('selected-media-preview');
