@@ -51,7 +51,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('posts', PostController::class);
 
     // Media Library
-    Route::resource('media', MediaController::class)->only(['index', 'store', 'destroy']);
+    // Use {media} as the route parameter (not {medium}) so implicit binding works with `Media $media`
+    Route::resource('media', MediaController::class)
+        ->only(['index', 'store', 'destroy'])
+        ->parameters(['media' => 'media']);
     Route::get('media/list', [MediaController::class, 'list'])->name('media.list');
 });
 
