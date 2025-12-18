@@ -34,4 +34,4 @@ jobs:
             cd /home/u803331128/domains/dailyurdu.net/dailyurdu
             php artisan optimize:clear
             php artisan optimize
-            mv /public public1
+            mv /home/u803331128/domains/dailyurdu.net/dailyurdu/public /home/u803331128/domains/dailyurdu.net/dailyurdu/public1
