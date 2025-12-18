@@ -19,13 +19,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->bind('path.public', function () {
-            // Use .env override if available
-            $customPath = env('CUSTOM_PUBLIC_PATH', base_path('public'));
 
-            // Normalize and return path
-            return File::isDirectory($customPath) ? $customPath : base_path('public');
-        });
     }
 
 

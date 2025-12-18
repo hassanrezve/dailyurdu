@@ -10,8 +10,11 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    private string $publicHtmlPath = '/home/dailyurd/public_html';
-
+    private string $publicHtmlPath = '';
+    public function __construct()
+    {
+        $this->publicHtmlPath=public_path();
+    }
     public function index()
     {
         $posts = Post::with('categories')
@@ -149,5 +152,5 @@ class PostController extends Controller
         $query->update(['featured' => false]);
     }
 
-    // Note: image upload and conversion moved to Media Library
+
 }

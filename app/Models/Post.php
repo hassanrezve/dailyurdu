@@ -60,7 +60,7 @@ class Post extends Model
             return $defaultImage;
         }
 
-        $imagePath = '/home/dailyurd/public_html/' . $this->image_url;
+        $imagePath =public_path().'/' . $this->image_url;
 
         if (!file_exists($imagePath)) {
             return $defaultImage;

@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Log;
 
 class MediaController extends Controller
 {
-    private string $publicHtmlPath = '/home/dailyurd/public_html';
-
+    private string $publicHtmlPath = '';
+    public function __construct()
+    {
+        $this->publicHtmlPath=public_path();
+    }
     public function index()
     {
         $media = Media::orderBy('created_at', 'desc')->paginate(24);
