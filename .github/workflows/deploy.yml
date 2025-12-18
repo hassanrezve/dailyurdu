@@ -19,9 +19,9 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_DAILYURD_USERNAME }}
           key: ${{ secrets.SSH_DAILYURD_PRIVATE }}
-          port: 21098
+          port: 65002
           source: "./"
-          target: "/home/dailyurd/dailyurdu"
+          target: "/home/u803331128/domains/dailyurdu.net/dailyurdu"
 
       - name: Copy build to dev.dailyurdu.net and clean up
         uses: appleboy/ssh-action@master
@@ -29,12 +29,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_DAILYURD_USERNAME }}
           key: ${{ secrets.SSH_DAILYURD_PRIVATE }}
-          port: 21098
+          port: 65002
           script: |
-            cd /home/dailyurd/dailyurdu
-
-            php artisan config:clear
-            php artisan route:clear
-            php artisan view:clear
-            php artisan cache:clear
-            php artisan config:cache
+            cd /home/u803331128/domains/dailyurdu.net/dailyurdu
+            php artisan optimize:clear
+            php artisan optimize
